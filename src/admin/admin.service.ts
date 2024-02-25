@@ -38,11 +38,11 @@ export class AdminService {
 
   async signIn(username: string, password: string) {
     const [admin] = await this.repo.find({ where: { username } });
-    if (!admin) throw new NotFoundException('Not Found User!');
+    if (!admin) throw new NotFoundException('없는 유저입니다!');
 
     const [salt, hashedPassword] = admin.password.split('.');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
-    if (hashedPassword !== hash.toString('hex')) throw new BadRequestException('Wrong Credential!');
+    if (hashedPassword !== hash.toString('hex')) throw new BadRequestException('잘못된 요청입니다!');
     const payload = { sub: admin.admin_id, username: admin.username, v: admin.refresh_version + 1 };
     const result = await this.tokenService.generateRefresh(payload);
     const accessToken = await this.tokenService.generateAccess(payload);
