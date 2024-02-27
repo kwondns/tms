@@ -12,14 +12,14 @@ switch (process.env.NODE_ENV) {
     Object.assign(envConfig, {
       type: 'sqlite' as const,
       database: 'dev.sqlite',
-      entities: ['./src/**/*.entity.ts'],
+      migrations: ['./src/**/migrations/*dev*.js'],
     });
     break;
   case 'test':
     Object.assign(envConfig, {
       type: 'sqlite' as const,
       database: 'test.sqlite',
-      entities: ['./src/**/*.entity.ts'],
+      migrations: ['./src/**/migrations/*test*.js'],
       migrationsRun: true,
     });
     break;
@@ -31,7 +31,7 @@ switch (process.env.NODE_ENV) {
       username: process.env.DB_USER_NAME,
       host: process.env.DB_HOST,
       password: `${process.env.DB_PASSWORD}`,
-      entities: ['./**/*.entity.js'],
+      migrations: ['./src/**/migrations/*prod*.js'],
     });
     break;
   default:
