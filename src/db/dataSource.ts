@@ -2,8 +2,8 @@ import { DataSource } from 'typeorm';
 
 const databaseConfig = {
   synchronize: false,
-  migrations: ['./src/**/migrations/*.js'],
   migrationsTableName: 'migration',
+  entities: ['dist/**/*.entity.js'],
 };
 const envConfig = Object.create(null);
 
