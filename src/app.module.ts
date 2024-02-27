@@ -4,12 +4,14 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { AdminModule } from './admin/admin.module';
 import { DatabaseModule } from './db/database.module';
+import { PortModule } from './port/port.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: `.env.${process.env.NODE_ENV}.local` }),
     DatabaseModule,
     AdminModule,
+    PortModule,
   ],
   controllers: [AppController],
   providers: [AppService],
