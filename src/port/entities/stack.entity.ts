@@ -51,13 +51,13 @@ export abstract class StackByCategory {
     process.env.NODE_ENV === 'production'
       ? `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
-               FROM backstack
+               FROM back_stack
                GROUP BY category`
       : `SELECT category,
        GROUP_CONCAT(name) AS name,
        GROUP_CONCAT(url) AS url,
        GROUP_CONCAT(img) AS img
-FROM backstack
+FROM back_stack
 GROUP BY category;
 `,
 })
