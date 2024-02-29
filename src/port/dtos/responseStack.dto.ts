@@ -1,6 +1,6 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
-export class ResponseStackDto {
+class StackDto {
   @Expose()
   @Transform(({ value }) => (process.env.NODE_ENV === 'production' ? value : value.split(',')))
   name: string[];
@@ -15,4 +15,18 @@ export class ResponseStackDto {
 
   @Expose()
   category: string;
+}
+
+export class ResponseStackDto {
+  @Type(() => StackDto)
+  @Expose()
+  front: StackDto;
+
+  @Type(() => StackDto)
+  @Expose()
+  back: StackDto;
+
+  @Type(() => StackDto)
+  @Expose()
+  etc: StackDto;
 }

@@ -19,6 +19,10 @@ export class ResponseProjectDto {
   @Expose()
   db: string;
 
+  @Transform(({ value }) => !!value)
+  @Expose()
+  visible: boolean;
+
   @Transform(({ obj }) => obj.front_tag.map((tag) => tag.front_tag))
   @Expose()
   front_tag: string[];

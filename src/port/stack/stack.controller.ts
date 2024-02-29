@@ -8,25 +8,18 @@ import { StackService } from './stack.service';
 @Controller('/port/stack')
 export class StackController {
   constructor(private stackService: StackService) {}
-  @Serialize(ResponseStackDto)
-  @Public()
-  @Get('/front')
-  getFront() {
-    return this.stackService.getFrontStack();
-  }
 
-  @Serialize(ResponseStackDto)
   @Public()
-  @Get('/back')
-  getBack() {
-    return this.stackService.getBackStack();
-  }
-
+  @Get()
   @Serialize(ResponseStackDto)
-  @Public()
-  @Get('/etc')
-  getEtc() {
-    return this.stackService.getEtcStack();
+  async getStack() {
+    const response = {};
+    [response['front'], response['back'], response['etc']] = await Promise.all([
+      this.stackService.getFrontStack(),
+      this.stackService.getBackStack(),
+      this.stackService.getEtcStack(),
+    ]);
+    return response;
   }
 
   @Post('/front')
