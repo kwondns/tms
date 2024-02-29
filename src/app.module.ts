@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -7,6 +7,7 @@ import { DatabaseModule } from './db/database.module';
 import { PortModule } from './port/port.module';
 import { UploadModule } from './upload/upload.module';
 import configuration from './configuration';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -21,6 +22,6 @@ import configuration from './configuration';
     UploadModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) }],
 })
 export class AppModule {}
