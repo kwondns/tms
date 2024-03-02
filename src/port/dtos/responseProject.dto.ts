@@ -30,4 +30,8 @@ export class ResponseProjectDto {
   @Transform(({ obj }) => obj.back_tag.map((tag) => tag.back_tag))
   @Expose()
   back_tag: string[];
+
+  @Expose()
+  @Transform(({ value, obj }) => (value ? obj.projectDetail.content : null))
+  projectDetail: string;
 }

@@ -26,9 +26,12 @@ export class ProjectService {
   }
 
   async getProjectById(id: string) {
-    const result = await this.projectRepo.findOne({ where: { id }, relations: ['projectDetail'] });
+    const result = await this.projectRepo.findOne({
+      where: { id },
+      relations: ['projectDetail', 'back_tag', 'front_tag'],
+    });
     if (!result) throw new BadRequestException('잘못된 요청입니다.');
-    return result.projectDetail.content;
+    return result;
   }
 
   async updateProject(id: string, projectAttrs: ProjectDto) {
@@ -37,10 +40,10 @@ export class ProjectService {
       relations: ['projectDetail', 'back_tag', 'front_tag'],
     });
     if (!project.projectDetail) throw new BadRequestException('잘못된 요청입니다.');
-    const { content, front_tag, back_tag, ...others } = projectAttrs;
+    const { projectDetail, front_tag, back_tag, ...others } = projectAttrs;
     const front = front_tag.map((tag) => this.frontTagRepo.create({ front_tag: tag }));
     const back = back_tag.map((tag) => this.backTagRepo.create({ back_tag: tag }));
-    project.projectDetail.content = content;
+    project.projectDetail.content = projectDetail;
     project.front_tag = front;
     project.back_tag = back;
     Object.assign(project, others);
@@ -48,12 +51,12 @@ export class ProjectService {
   }
 
   async createProject(projectAttrs: ProjectDto) {
-    const { content, front_tag, back_tag, ...others } = projectAttrs;
-    const projectDetail = this.projectDetailRepo.create({ content });
+    const { projectDetail, front_tag, back_tag, ...others } = projectAttrs;
+    const projectDetailObject = this.projectDetailRepo.create({ content: projectDetail });
     const front = front_tag.map((tag) => this.frontTagRepo.create({ front_tag: tag }));
     const back = back_tag.map((tag) => this.backTagRepo.create({ back_tag: tag }));
     const project = this.projectRepo.create(others);
-    project.projectDetail = projectDetail;
+    project.projectDetail = projectDetailObject;
     project.front_tag = front;
     project.back_tag = back;
     return this.projectRepo.save(project);

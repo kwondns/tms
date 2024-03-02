@@ -17,7 +17,7 @@ export class ProjectDto {
   db: string;
 
   @IsString()
-  content: string;
+  projectDetail: string;
 
   @IsBoolean()
   visible: boolean;
