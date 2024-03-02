@@ -23,6 +23,8 @@ export class UploadService {
   }
   async uploadHandler(path: string, files: Array<Express.Multer.File>, uri?: string) {
     const env = this.configService.get<string>('S3_ENV');
+    this.putResults = [];
+    this.putPromises = [];
     for (const file of files) {
       await this.putS3(path, env, file, uri);
     }
