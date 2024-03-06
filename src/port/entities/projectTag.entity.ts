@@ -6,7 +6,7 @@ export abstract class ProjectTag {
   id: string;
 }
 
-@Entity()
+@Entity({ schema: 'portfolio' })
 export class FrontTag extends ProjectTag {
   @Column()
   front_tag: string;
@@ -14,7 +14,7 @@ export class FrontTag extends ProjectTag {
   @ManyToOne(() => Project, (project) => project.front_tag)
   project: Project;
 }
-@Entity()
+@Entity({ schema: 'portfolio' })
 export class BackTag extends ProjectTag {
   @Column()
   back_tag: string;

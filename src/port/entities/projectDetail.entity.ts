@@ -1,7 +1,7 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Project } from './project.entity';
 
-@Entity()
+@Entity({ schema: 'portfolio' })
 export class ProjectDetail {
   @PrimaryGeneratedColumn()
   id: number;

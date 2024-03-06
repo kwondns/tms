@@ -23,13 +23,13 @@ export abstract class Stack {
   category: string;
 }
 
-@Entity()
+@Entity({ schema: 'portfolio' })
 export class BackStack extends Stack {}
 
-@Entity()
+@Entity({ schema: 'portfolio' })
 export class FrontStack extends Stack {}
 
-@Entity()
+@Entity({ schema: 'portfolio' })
 export class EtcStack extends Stack {}
 
 export abstract class StackByCategory {
@@ -47,6 +47,7 @@ export abstract class StackByCategory {
 }
 
 @ViewEntity({
+  schema: 'portfolio',
   expression:
     process.env.NODE_ENV === 'production'
       ? `SELECT category,
@@ -64,6 +65,7 @@ GROUP BY category;
 export class BackStackByCategory extends StackByCategory {}
 
 @ViewEntity({
+  schema: 'portfolio',
   expression:
     process.env.NODE_ENV === 'production'
       ? `SELECT category,
@@ -82,6 +84,7 @@ export class BackStackByCategory extends StackByCategory {}
 export class FrontStackByCategory extends StackByCategory {}
 
 @ViewEntity({
+  schema: 'portfolio',
   expression:
     process.env.NODE_ENV === 'production'
       ? `SELECT category,

@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { BackTag, FrontTag } from './projectTag.entity';
 import { ProjectDetail } from './projectDetail.entity';
 
-@Entity()
+@Entity({ schema: 'portfolio' })
 export class Project {
   @PrimaryGeneratedColumn('uuid')
   id: string;
