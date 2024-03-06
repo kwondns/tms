@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'crypto';
 
@@ -50,5 +50,10 @@ export class UploadService {
       ContentDisposition,
     });
     this.putPromises.push(this.s3.send(command));
+  }
+
+  async deleteHandler(type: string, path: string) {
+    const command = new DeleteObjectCommand({ Bucket: `${this.bucket}-${type}`, Key: path });
+    return this.s3.send(command);
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
@@ -13,5 +13,11 @@ export class UploadController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     return this.uploadService.uploadHandler(target, files, body.uri);
+  }
+
+  @Delete(':target')
+  @UseInterceptors(AnyFilesInterceptor())
+  deleteFromS3(@Param('target') type: string, @Body() body: { target: string }) {
+    return this.uploadService.deleteHandler(type, body.target);
   }
 }
