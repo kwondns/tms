@@ -52,7 +52,7 @@ export abstract class StackByCategory {
     process.env.NODE_ENV === 'production'
       ? `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
-               FROM back_stack
+               FROM portfolio.back_stack
                GROUP BY category`
       : `SELECT category,
        GROUP_CONCAT(name) AS name,
@@ -70,7 +70,7 @@ export class BackStackByCategory extends StackByCategory {}
     process.env.NODE_ENV === 'production'
       ? `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
-               FROM front_stack
+               FROM portfolio.front_stack
                GROUP BY category;
       `
       : `SELECT category,
@@ -89,7 +89,7 @@ export class FrontStackByCategory extends StackByCategory {}
     process.env.NODE_ENV === 'production'
       ? `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
-               FROM etc_stack
+               FROM portfolio.etc_stack
                GROUP BY category;
   `
       : `SELECT category,
