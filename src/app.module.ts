@@ -16,6 +16,7 @@ import { APP_PIPE } from '@nestjs/core';
       envFilePath: ['.env.aws', process.env.NODE_ENV === 'production' ? '.env' : `.env.${process.env.NODE_ENV}.local`],
       load: [configuration],
     }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
     AdminModule,
     PortModule,
