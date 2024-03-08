@@ -4,6 +4,7 @@ const databaseConfig = {
   synchronize: false,
   migrationsTableName: 'migration',
   entities: ['dist/**/*.entity.js'],
+  subscribers: ['dist/**/*.sub.js'],
 };
 const envConfig = Object.create(null);
 
