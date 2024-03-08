@@ -8,6 +8,8 @@ import { PortModule } from './port/port.module';
 import { UploadModule } from './upload/upload.module';
 import configuration from './configuration';
 import { APP_PIPE } from '@nestjs/core';
+import { TimeModule } from './time/time.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { APP_PIPE } from '@nestjs/core';
     AdminModule,
     PortModule,
     UploadModule,
+    TimeModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) }],
