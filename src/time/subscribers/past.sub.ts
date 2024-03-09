@@ -1,10 +1,10 @@
-import { EntitySubscriberInterface, EventSubscriber, InsertEvent } from 'typeorm';
+import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm';
 import { Past } from '../entities/past.entity';
 import { PastCount } from '../entities/pastCount.entity';
 import { Present } from '../entities/present.entity';
 
 @EventSubscriber()
-export class AfterInsertPastSub implements EntitySubscriberInterface<Past> {
+export class PastSub implements EntitySubscriberInterface<Past> {
   listenTo(): any {
     return Past;
   }
@@ -29,6 +29,30 @@ export class AfterInsertPastSub implements EntitySubscriberInterface<Past> {
         event.queryRunner.manager.save(PastCount, pastCount),
         event.queryRunner.manager.save(present),
       ]);
+
+      await event.queryRunner.commitTransaction();
+    } catch (e) {
+      await event.queryRunner.rollbackTransaction();
+    }
+  }
+
+  async afterUpdate(event: UpdateEvent<Past>) {
+    await event.queryRunner.startTransaction();
+    try {
+      const diffMinute =
+        (new Date(event.entity.endTime).getTime() - new Date(event.entity.startTime).getTime()) / 60 / 1000;
+
+      const beforeDiffMinute =
+        (new Date(event.databaseEntity.endTime).getTime() - new Date(event.databaseEntity.startTime).getTime()) /
+        60 /
+        1000;
+      const pastCount = await event.queryRunner.manager
+        .createQueryBuilder(PastCount, 'pc')
+        .where('pc.date::date = :startTime', { startTime: new Date(event.entity.startTime).toDateString() })
+        .getOne();
+      pastCount.count -= beforeDiffMinute;
+      pastCount.count += diffMinute;
+      await Promise.all([event.queryRunner.manager.save(PastCount, pastCount)]);
 
       await event.queryRunner.commitTransaction();
     } catch (e) {
