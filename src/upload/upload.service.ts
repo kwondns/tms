@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectsCommand, ListObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'crypto';
 
@@ -21,14 +21,15 @@ export class UploadService {
     this.putPromises = [];
     this.putResults = [];
   }
-  async uploadHandler(path: string, files: Array<Express.Multer.File>, uri?: string) {
+  async uploadHandler(path: string, files: Array<Express.Multer.File>, num: number, uri?: string) {
     const env = this.configService.get<string>('S3_ENV');
-    this.putResults = [];
+    if (this.putResults.length >= num) this.putResults = [];
     this.putPromises = [];
     for (const file of files) {
       await this.putS3(path, env, file, uri);
     }
     await Promise.all(this.putPromises);
+    console.log(this.putResults);
     return this.putResults;
   }
 
@@ -52,8 +53,21 @@ export class UploadService {
     this.putPromises.push(this.s3.send(command));
   }
 
-  async deleteHandler(type: string, path: string) {
-    const command = new DeleteObjectCommand({ Bucket: `${this.bucket}-${type}`, Key: path });
+  async deleteHandler(type: string, path: string | string[]) {
+    const target = [];
+    const makeTarget = (path: string) => target.push({ Key: path });
+    if (path instanceof Array) {
+      path.forEach((key) => makeTarget(key));
+    } else makeTarget(path);
+    const command = new DeleteObjectsCommand({
+      Bucket: `${this.bucket}-${type}`,
+      Delete: { Objects: target },
+    });
     return this.s3.send(command);
+  }
+
+  async objectList(type: string, path: string) {
+    const Obj = new ListObjectsCommand({ Bucket: `${this.bucket}-${type}`, Prefix: path });
+    return await this.s3.send(Obj);
   }
 }

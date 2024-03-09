@@ -9,10 +9,10 @@ export class UploadController {
   @UseInterceptors(AnyFilesInterceptor())
   uploadToS3(
     @Param('target') target: string,
-    @Body() body: { uri?: string },
+    @Body() body: { num: string; uri?: string },
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    return this.uploadService.uploadHandler(target, files, body.uri);
+    return this.uploadService.uploadHandler(target, files, Number(body.num), body.uri);
   }
 
   @Delete(':target')
