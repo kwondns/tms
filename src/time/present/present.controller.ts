@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Put } from '@nestjs/common';
 import { PresentService } from './present.service';
 import { PresentDto } from '../dtos/present.dto';
 import { Public } from '../../decorators/public.decorator';
@@ -13,7 +13,7 @@ export class PresentController {
     return this.presentService.getPresent();
   }
 
-  @Public()
+  @Put()
   async storePresent(@Body() body: PresentDto) {
     return this.presentService.storePresent(body);
   }
