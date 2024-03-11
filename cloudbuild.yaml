@@ -6,5 +6,4 @@ steps:
     entrypoint: 'bun'
     args: ['run', 'build']
 
-    args: ["bun", "build"]
 
