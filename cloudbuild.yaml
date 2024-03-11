@@ -1,0 +1,9 @@
+steps:
+  - name: Install Bun
+    image: gcr.io/cloudbuilders/bun:latest
+
+    command: ["bun", "build"]
+
+artifacts:
+  paths:
+    - dist/**
