@@ -15,6 +15,11 @@ export class FutureController {
   getFutureBox(@Param('priority') priority: number) {
     return this.futureService.getFutureBox(priority);
   }
+  @Public()
+  @Get(':priority/record')
+  getFutureBoxRecord(@Param('priority') priority: number) {
+    return this.futureService.getFutureBoxRecord(priority);
+  }
 
   @Patch()
   patchFuture(@Body() body: FutureDto) {

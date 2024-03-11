@@ -17,6 +17,8 @@ export class FutureService {
 
   async getFutureBox(priority: number) {
     return this.futureBoxRepo.find({ where: { priority }, relations: ['future'] });
+  async getFutureBoxRecord(priority: number) {
+    return this.futureBoxRepo.find({ where: { priority, checked: true }, relations: ['future'] });
   }
 
   async patchFuture(attrs: FutureDto) {
@@ -37,7 +39,6 @@ export class FutureService {
   async patchFutureBox(attrs: FutureBoxDto) {
     const futureBox = await this.futureBoxRepo.findOneBy({ id: attrs.id });
     if (!futureBox) throw new NotFoundException('없는 박스입니다!');
-    console.log(futureBox);
     Object.assign(futureBox, attrs);
     return this.futureBoxRepo.save(futureBox);
   }
