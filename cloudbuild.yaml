@@ -1,9 +1,9 @@
 steps:
-  - name: Install Bun
-    image: gcr.io/cloudbuilders/bun:latest
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['install', '-g', 'bun']
+  - name: 'node'
+    entrypoint: 'bun'
+    args: ['run', 'build']
 
-    args: ["bun", "build"]
 
-artifacts:
-  paths:
-    - dist/**
