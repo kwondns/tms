@@ -1,4 +1,12 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Generated,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Future } from './future.entity';
 
 @Entity({ schema: 'timeline' })
@@ -20,4 +28,11 @@ export class FutureBox {
 
   @OneToMany(() => Future, (future) => future.box)
   future: Future;
+
+  @Column()
+  @Generated('increment')
+  order: number;
+
+  @Column({ default: false })
+  checked: boolean;
 }

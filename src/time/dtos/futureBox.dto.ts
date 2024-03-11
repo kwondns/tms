@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FutureBoxDto {
   @IsString()
@@ -11,4 +11,12 @@ export class FutureBoxDto {
   @IsNumber()
   @IsOptional()
   priority: number;
+
+  @IsBoolean()
+  @IsOptional()
+  checked: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  order: number;
 }

@@ -16,7 +16,13 @@ export class FutureService {
   ) {}
 
   async getFutureBox(priority: number) {
-    return this.futureBoxRepo.find({ where: { priority }, relations: ['future'] });
+    return this.futureBoxRepo.find({
+      where: { priority, checked: false },
+      order: { order: 'DESC' },
+      relations: ['future'],
+    });
+  }
+
   async getFutureBoxRecord(priority: number) {
     return this.futureBoxRepo.find({ where: { priority, checked: true }, relations: ['future'] });
   }
