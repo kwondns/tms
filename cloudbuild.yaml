@@ -1,9 +1,11 @@
 steps:
-  - name: 'node'
-    entrypoint: 'npm'
-    args: ['install', '-g', 'bun']
-  - name: 'node'
-    entrypoint: 'bun'
-    args: ['run', 'build']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    entrypoint: 'bash'
+    args: ['-c', 'gcloud compute scp --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" --force-key-file-overwrite --recurse ./ hanjunkwon@instance-20240311-134916:~/app/']
 
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    entrypoint: 'bash'
+    args: ['-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; ~/.bun/bin/bun install; ~/.bun/bin/bun run build; killall node; ~/.bun/bin/bun run start:prod"']
 
+options:
+  logging: CLOUD_LOGGING_ONLY
