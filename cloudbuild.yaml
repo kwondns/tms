@@ -9,7 +9,10 @@ steps:
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
     entrypoint: 'bash'
-    args: ['-c', 'nohup gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; ~/.bun/bin/bun install --production; ~/.bun/bin/bun run build; killall node; ~/.bun/bin/bun run start:prod" &']
+    args: ['-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; ~/.bun/bin/bun install --production; ~/.bun/bin/bun run build; killall node"']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    entrypoint: 'bash'
+    args: ['-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; nohup ~/.bun/bin/bun run start:prod >> log.log" &']
 
 options:
   logging: CLOUD_LOGGING_ONLY
