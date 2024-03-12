@@ -11,8 +11,7 @@ steps:
     entrypoint: 'bash'
     args:
     - '-c'
-    - 'gcloud compute ssh hanjunkwon@instance-20240311-134916 --project="tokyo-trilogy-416913" --zone="asia-northeast3-b"'
-    - '--command "cd ./app; ~/.bun/bin/bun install --production; ~/.bun/bin/bun run build; killall bun;killall node;chmod u+x start.sh; ./start.sh > /dev/null 2>&1"'
+    - 'gcloud compute ssh hanjunkwon@instance-20240311-134916 --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" --command "cd ./app; ~/.bun/bin/bun install --production; ~/.bun/bin/bun run build; killall bun;killall node;chmod u+x start.sh; ./start.sh > /dev/null 2>&1"'
 
 options:
   logging: CLOUD_LOGGING_ONLY
