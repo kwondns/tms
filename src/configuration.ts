@@ -1,5 +1,5 @@
 export default () => {
-  if (!process.env.NODE_ENV) {
+  if (process.env.NODE_ENV === 'production') {
     return {
       TOKEN_REFRESH_SECRET: process.env.TOKEN_REFRESH_SECRET,
       TOKEN_REFRESH_EXPIRE: process.env.TOKEN_REFRESH_EXPIRE,
