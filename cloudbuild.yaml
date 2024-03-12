@@ -1,18 +1,16 @@
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
     entrypoint: 'bash'
-    args: ['-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; rm -rf .git"']
+    args: [ '-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; rm -rf .git"' ]
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
     entrypoint: 'bash'
-    args: ['-c', 'gcloud compute scp --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" --force-key-file-overwrite --recurse ./ hanjunkwon@instance-20240311-134916:~/app/']
+    args: [ '-c', 'gcloud compute scp --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" --force-key-file-overwrite --recurse ./ hanjunkwon@instance-20240311-134916:~/app/' ]
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
     entrypoint: 'bash'
-    args: ['-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; ~/.bun/bin/bun install --production; ~/.bun/bin/bun run build; killall node"']
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
-    entrypoint: 'bash'
-    args: ['-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; nohup ~/.bun/bin/bun run start:prod >> log.log" &']
+    args: [ '-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; ~/.bun/bin/bun install --production; ~/.bun/bin/bun run build; killall bun;killall node;chmod u+x start.sh;./start.sh > /dev/
+null 2>&1;exit"' ]
 
 options:
   logging: CLOUD_LOGGING_ONLY
