@@ -1,6 +1,10 @@
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
     entrypoint: 'bash'
+    args: ['-c', 'gcloud compute ssh --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" hanjunkwon@instance-20240311-134916 --command "cd ./app; rm -rf .git"']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    entrypoint: 'bash'
     args: ['-c', 'gcloud compute scp --project="tokyo-trilogy-416913" --zone="asia-northeast3-b" --force-key-file-overwrite --recurse ./ hanjunkwon@instance-20240311-134916:~/app/']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
