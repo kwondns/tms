@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { RequestAdminDto } from './dtos/requestAdmin.dto';
 import { Request, Response } from 'express';
