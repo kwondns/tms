@@ -58,7 +58,8 @@ export class TokenService {
       if (payload.v !== admin.refresh_version || token !== admin.refresh_token) throw new Error();
       return payload;
     } catch (error) {
-      throw new UnauthorizedException('Expired Token');
+      if (token) throw new UnauthorizedException('Expired Token');
+      else throw new UnauthorizedException();
     }
   }
 
