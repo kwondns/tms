@@ -17,7 +17,7 @@ export class PastCount {
     process.env.NODE_ENV === 'production'
       ? `
       SELECT pc.id,
-             pc.date,
+             pc.date::date AS date,
              pc.count,
              array_agg(p.title) AS titles,
              count(p.title)     AS titles_count

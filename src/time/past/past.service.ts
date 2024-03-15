@@ -51,7 +51,13 @@ export class PastService {
   }
 
   async getMonthPast() {
-    return await this.pastCountViewRepo.find({ order: { date: 'desc' }, take: 30 });
+    const result = await this.pastCountViewRepo
+      .createQueryBuilder('view')
+      .select(['id', "TO_CHAR(date, 'YYYY-MM-DD') as date", 'count', 'titles', 'titles_count'])
+      .orderBy('date', 'DESC')
+      .limit(30)
+      .getRawMany();
+    return result.reverse();
   }
 
   async getCalendarPast(date: string) {
