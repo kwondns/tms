@@ -6,6 +6,8 @@ import { Server } from 'socket.io';
   cors: {
     origin: '*',
   },
+  pingInterval: 30000,
+  pingTimeout: 5000,
 })
 export class PresentGateway {
   @WebSocketServer()
