@@ -17,9 +17,21 @@ export class ProjectController {
   }
 
   @Public()
+  @Get('visible')
+  async getProjectAllVisible() {
+    return this.projectService.getProjectAllVisible();
+  }
+
+  @Public()
   @Get(':id')
-  async getProjectById(@Param('id') id: string) {
-    return this.projectService.getProjectById(id);
+  async getProjectDetailById(@Param('id') id: string) {
+    return this.projectService.getProjectDetailById(id);
+  }
+
+  @Public()
+  @Get('/more/:id')
+  async getProjectMoreDetailById(@Param('id') id: string) {
+    return this.projectService.getProjectMoreDetailById(id);
   }
 
   @Put(':id')

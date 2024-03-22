@@ -17,7 +17,20 @@ export class ProjectDto {
   db: string;
 
   @IsString()
-  projectDetail: string;
+  context: string;
+
+  @IsString()
+  role: string;
+
+  @IsString()
+  link: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  images: string[];
+
+  @IsString()
+  projectMoreDetail: string;
 
   @IsBoolean()
   visible: boolean;

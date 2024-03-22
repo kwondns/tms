@@ -29,7 +29,6 @@ export class UploadService {
       await this.putS3(path, env, file, uri);
     }
     await Promise.all(this.putPromises);
-    console.log(this.putResults);
     return this.putResults;
   }
 

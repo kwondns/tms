@@ -9,6 +9,15 @@ export class ProjectDetail {
   @OneToOne(() => Project, (project) => project.projectDetail)
   project: Project;
 
-  @Column()
-  content: string;
+  @Column({ nullable: false, default: '-' })
+  link: string;
+
+  @Column({ nullable: false, default: '' })
+  context: string;
+
+  @Column({ nullable: false, default: '' })
+  role: string;
+
+  @Column({ type: 'text', array: true, default: [] })
+  images: string[];
 }

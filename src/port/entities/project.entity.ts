@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BackTag, FrontTag } from './projectTag.entity';
+import { ProjectMoreDetail } from './projectMoreDetail.entity';
 import { ProjectDetail } from './projectDetail.entity';
 
 @Entity({ schema: 'portfolio' })
@@ -40,4 +41,8 @@ export class Project {
   @OneToOne(() => ProjectDetail, (projectDetail) => projectDetail.project, { cascade: true })
   @JoinColumn()
   projectDetail: ProjectDetail;
+
+  @OneToOne(() => ProjectMoreDetail, (projectMoreDetail) => projectMoreDetail.project, { cascade: true })
+  @JoinColumn()
+  projectMoreDetail: ProjectMoreDetail;
 }

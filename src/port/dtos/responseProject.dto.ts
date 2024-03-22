@@ -31,7 +31,23 @@ export class ResponseProjectDto {
   @Expose()
   back_tag: string[];
 
+  @Transform(({ obj }) => (obj.projectDetail ? obj.projectDetail.role : null))
   @Expose()
-  @Transform(({ value, obj }) => (value ? obj.projectDetail.content : null))
-  projectDetail: string;
+  role: string;
+
+  @Transform(({ obj }) => (obj.projectDetail ? obj.projectDetail.context : null))
+  @Expose()
+  context: string;
+
+  @Transform(({ obj }) => (obj.projectDetail ? obj.projectDetail.link : null))
+  @Expose()
+  link: string;
+
+  @Transform(({ obj }) => (obj.projectDetail ? obj.projectDetail.images : null))
+  @Expose()
+  images: string;
+
+  @Expose()
+  @Transform(({ value, obj }) => (value ? obj.projectMoreDetail.content : null))
+  projectMoreDetail: string;
 }

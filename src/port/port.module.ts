@@ -14,6 +14,7 @@ import { StackController } from './stack/stack.controller';
 import { StackService } from './stack/stack.service';
 import { ProjectController } from './project/project.controller';
 import { ProjectService } from './project/project.service';
+import { ProjectMoreDetail } from './entities/projectMoreDetail.entity';
 import { ProjectDetail } from './entities/projectDetail.entity';
 
 @Module({
@@ -22,6 +23,7 @@ import { ProjectDetail } from './entities/projectDetail.entity';
       Project,
       ProjectTag,
       ProjectDetail,
+      ProjectMoreDetail,
       FrontTag,
       BackTag,
       Backstack,
