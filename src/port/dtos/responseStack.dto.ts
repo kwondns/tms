@@ -15,9 +15,15 @@ class StackDto {
 
   @Expose()
   category: string;
+
+  @Expose()
+  recent: boolean;
+
+  @Expose()
+  tech: string;
 }
 
-export class ResponseStackDto {
+export class ResponseStack {
   @Type(() => StackDto)
   @Expose()
   front: StackDto;
@@ -29,4 +35,13 @@ export class ResponseStackDto {
   @Type(() => StackDto)
   @Expose()
   etc: StackDto;
+}
+export class ResponseStackDto {
+  @Type(() => ResponseStack)
+  @Expose()
+  recent: ResponseStack;
+
+  @Type(() => StackDto)
+  @Expose()
+  other: StackDto[];
 }

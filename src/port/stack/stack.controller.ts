@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { Public } from '../../decorators/public.decorator';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ResponseStackDto } from '../dtos/responseStack.dto';
@@ -13,13 +13,18 @@ export class StackController {
   @Get()
   @Serialize(ResponseStackDto)
   async getStack() {
-    const response = {};
-    [response['front'], response['back'], response['etc']] = await Promise.all([
+    const recent = {};
+    const other = {};
+    [recent['front'], recent['back'], recent['etc'], other['other']] = await Promise.all([
       this.stackService.getFrontStack(),
       this.stackService.getBackStack(),
       this.stackService.getEtcStack(),
+      this.stackService.getStackOthers(),
     ]);
-    return response;
+    return {
+      recent,
+      other: other['other'],
+    };
   }
 
   @Post('/front')
@@ -35,5 +40,34 @@ export class StackController {
   @Post('/etc')
   createEtc(@Body() body: StackDto) {
     return this.stackService.createEtcStack(body);
+  }
+
+  @Put('/front')
+  updateFront(@Body() body: StackDto) {
+    return this.stackService.updateFrontStack(body);
+  }
+
+  @Put('/back')
+  updateBack(@Body() body: StackDto) {
+    return this.stackService.updateBackStack(body);
+  }
+
+  @Put('/etc')
+  updateEtc(@Body() body: StackDto) {
+    return this.stackService.updateEtcStack(body);
+  }
+  @Delete('/front')
+  deleteFront(@Body() body: StackDto) {
+    return this.stackService.deleteFrontStack(body);
+  }
+
+  @Delete('/back')
+  deleteBack(@Body() body: StackDto) {
+    return this.stackService.deleteBackStack(body);
+  }
+
+  @Delete('/etc')
+  deleteEtc(@Body() body: StackDto) {
+    return this.stackService.deleteEtcStack(body);
   }
 }

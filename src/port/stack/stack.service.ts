@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import {
   BackStack,
   BackStackByCategory,
@@ -8,7 +8,8 @@ import {
   FrontStack,
   FrontStackByCategory,
 } from '../entities/stack.entity';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
+import { dataSource as myDataSource } from '../../db/dataSource';
 import { StackDto } from '../dtos/stack.dto';
 
 @Injectable()
@@ -20,7 +21,14 @@ export class StackService {
     @InjectRepository(FrontStackByCategory) private frontStackViewRepo: Repository<FrontStackByCategory>,
     @InjectRepository(BackStackByCategory) private backStackViewRepo: Repository<BackStackByCategory>,
     @InjectRepository(EtcStackByCategory) private etcStackViewRepo: Repository<EtcStackByCategory>,
+    @InjectEntityManager(myDataSource.managers) private entityManager: EntityManager,
   ) {}
+
+  async getStackOthers() {
+    return await this.entityManager.query(
+      "SELECT * FROM (SELECT *, 'front' as tech FROM portfolio.front_stack UNION ALL SELECT *, 'back' as tech FROM portfolio.back_stack UNION ALL SELECT *, 'etc' as tech FROM portfolio.etc_stack) AS stack WHERE recent = false ORDER BY stack.category",
+    );
+  }
 
   async getFrontStack() {
     const stack = await this.frontStackViewRepo.find();
@@ -44,16 +52,68 @@ export class StackService {
     const frontStack = this.frontStackRepo.create(attrs);
     return this.frontStackRepo.save(frontStack);
   }
+
   async createBackStack(attrs: StackDto) {
     const stack = await this.backStackRepo.findOneBy({ name: attrs.name });
     if (stack) throw new BadRequestException('이미 있는 스택입니다.');
-    const frontStack = this.backStackRepo.create(attrs);
-    return this.backStackRepo.save(frontStack);
+    const backStack = this.backStackRepo.create(attrs);
+    return this.backStackRepo.save(backStack);
   }
+
   async createEtcStack(attrs: StackDto) {
     const stack = await this.etcStackRepo.findOneBy({ name: attrs.name });
     if (stack) throw new BadRequestException('이미 있는 스택입니다.');
-    const frontStack = this.etcStackRepo.create(attrs);
-    return this.etcStackRepo.save(frontStack);
+    const etcStack = this.etcStackRepo.create(attrs);
+    return this.etcStackRepo.save(etcStack);
+  }
+  async updateFrontStack(attrs: StackDto) {
+    const stack = await this.frontStackRepo.findOneBy({ name: attrs.name });
+    if (!stack) throw new BadRequestException('없는 스택입니다.');
+    Object.assign(stack, attrs);
+    return this.frontStackRepo.save(stack);
+  }
+
+  async updateBackStack(attrs: StackDto) {
+    const stack = await this.backStackRepo.findOneBy({ name: attrs.name });
+    if (!stack) throw new BadRequestException('없는 스택입니다.');
+    Object.assign(stack, attrs);
+    return this.backStackRepo.save(stack);
+  }
+
+  async updateEtcStack(attrs: StackDto) {
+    const stack = await this.etcStackRepo.findOneBy({ name: attrs.name });
+    if (!stack) throw new BadRequestException('없는 스택입니다.');
+    Object.assign(stack, attrs);
+    return this.etcStackRepo.save(stack);
+  }
+
+  async deleteFrontStack(attrs: StackDto) {
+    return await this.frontStackRepo
+      .createQueryBuilder('stack')
+      .delete()
+      .from(FrontStack)
+      .where('name = :name')
+      .setParameter('name', attrs.name)
+      .execute();
+  }
+
+  async deleteBackStack(attrs: StackDto) {
+    return await this.frontStackRepo
+      .createQueryBuilder('stack')
+      .delete()
+      .from(FrontStack)
+      .where('name = :name')
+      .setParameter('name', attrs.name)
+      .execute();
+  }
+
+  async deleteEtcStack(attrs: StackDto) {
+    return await this.frontStackRepo
+      .createQueryBuilder('stack')
+      .delete()
+      .from(FrontStack)
+      .where('name = :name')
+      .setParameter('name', attrs.name)
+      .execute();
   }
 }

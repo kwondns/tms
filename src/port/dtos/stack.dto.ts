@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsBoolean, IsString } from 'class-validator';
 
 export class StackDto {
   @IsString()
@@ -12,4 +12,7 @@ export class StackDto {
 
   @IsString()
   category: string;
+
+  @IsBoolean()
+  recent: boolean;
 }

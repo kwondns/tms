@@ -13,6 +13,9 @@ export abstract class Stack {
   @Column()
   img: string;
 
+  @Column({ default: false })
+  recent: boolean;
+
   @Column({
     type: `${process.env.NODE_ENV === 'production' ? 'timestamp with time zone' : 'datetime'}`,
     default: () => 'CURRENT_TIMESTAMP',
@@ -53,12 +56,14 @@ export abstract class StackByCategory {
       ? `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
                FROM portfolio.back_stack
+               WHERE recent = true
                GROUP BY category`
       : `SELECT category,
        GROUP_CONCAT(name) AS name,
        GROUP_CONCAT(url) AS url,
        GROUP_CONCAT(img) AS img
 FROM back_stack
+WHERE recent = true
 GROUP BY category;
 `,
 })
@@ -71,6 +76,7 @@ export class BackStackByCategory extends StackByCategory {}
       ? `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
                FROM portfolio.front_stack
+               WHERE recent = true
                GROUP BY category;
       `
       : `SELECT category,
@@ -78,6 +84,7 @@ export class BackStackByCategory extends StackByCategory {}
                 GROUP_CONCAT(url)  AS url,
                 GROUP_CONCAT(img)  AS img
          FROM front_stack
+         WHERE recent = true
          GROUP BY category;
       `,
 })
@@ -90,6 +97,7 @@ export class FrontStackByCategory extends StackByCategory {}
       ? `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
                FROM portfolio.etc_stack
+               WHERE recent = true
                GROUP BY category;
   `
       : `SELECT category,
@@ -97,6 +105,7 @@ export class FrontStackByCategory extends StackByCategory {}
        GROUP_CONCAT(url) AS url,
        GROUP_CONCAT(img) AS img
 FROM etc_stack
+WHERE recent = true
 GROUP BY category;
 `,
 })
