@@ -2,17 +2,17 @@ version: 0.1
 phases:
   pre_build:
     commands:
-      - echo Installing source With Bun...
-      - npm install -g bun
-      - bun install
+#      - echo Installing source With Bun...
+#      - npm install -g bun
+#      - bun install
   build:
     commands:
-      - echo Build started on `date`
-      - bun run build
+#      - echo Build started on `date`
+#      - bun run build
   post_build:
     commands:
       # copy the contents of /dist to S3
-      - aws s3 cp --recursive --acl public-read ./dist s3://tms-server-source/
+      - aws s3 cp --recursive --acl public-read ./ s3://tms-server-source/
 
 #      # set the cache-control headers for index.html to prevent
 #      # browser caching
@@ -23,4 +23,3 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: dist
