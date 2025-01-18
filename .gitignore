@@ -58,3 +58,5 @@ test.sqlite
 /src/migrations/
 
 **/*.http
+
+*.pem
