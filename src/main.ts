@@ -7,7 +7,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: (origin, callback) => {
-      if (origin && origin.endsWith('kwondns.site')) callback(null, true);
+      if (origin && (origin.endsWith('kwondns.site') || origin.endsWith('kwondns.com'))) callback(null, true);
       else callback(null, false);
     },
     methods: ['GET', 'PATCH', 'DELETE', 'POST', 'PUT'],

@@ -27,11 +27,11 @@ switch (process.env.NODE_ENV) {
   case 'production':
     Object.assign(envConfig, {
       type: 'postgres' as const,
-      database: process.env.DB_NAME,
-      port: process.env.DB_PORT,
-      username: process.env.DB_USER_NAME,
-      host: process.env.DB_HOST,
-      password: `${process.env.DB_PASSWORD}`,
+      database: 'postgres',
+      port: 5432,
+      username: 'postgres',
+      host: 'tms-osaka.cvgus8k086w5.ap-northeast-3.rds.amazonaws.com',
+      password: 'oG28E5SbX38WHtTgwHFn',
       migrations: ['./dist/**/migrations/*prod*.js'],
     });
     break;
