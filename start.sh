@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/app || exit
+cd ~/workspace/ || exit
 
 ~/.bun/bin/bun install --production
 
