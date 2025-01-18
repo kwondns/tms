@@ -30,8 +30,8 @@ switch (process.env.NODE_ENV) {
       database: 'postgres',
       port: 5432,
       username: 'postgres',
-      host: 'tms-osaka.cvgus8k086w5.ap-northeast-3.rds.amazonaws.com',
-      password: 'oG28E5SbX38WHtTgwHFn',
+      host: process.env.DB_HOST,
+      password: process.env.DB_PASSWORD,
       migrations: ['./dist/**/migrations/*prod*.js'],
     });
     break;
