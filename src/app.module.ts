@@ -1,4 +1,4 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -11,6 +11,9 @@ import { APP_PIPE } from '@nestjs/core';
 import { TimeModule } from './time/time.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BlogModule } from './blog/blog.module';
+import { WinstonModule } from 'nest-winston';
+import { LoggerMiddleware } from './middleware/logger.middleware';
+import { winstonConfig } from './libs/generateLog';
 
 @Module({
   imports: [
@@ -19,6 +22,7 @@ import { BlogModule } from './blog/blog.module';
       envFilePath: ['.env.aws', process.env.NODE_ENV === 'production' ? '.env' : `.env.${process.env.NODE_ENV}.local`],
       load: [configuration],
     }),
+    WinstonModule.forRoot(winstonConfig),
     ScheduleModule.forRoot(),
     DatabaseModule,
     AdminModule,
@@ -30,4 +34,8 @@ import { BlogModule } from './blog/blog.module';
   controllers: [AppController],
   providers: [AppService, { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) }],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
