@@ -9,7 +9,7 @@ async function bootstrap() {
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   app.enableCors({
     origin: (origin, callback) => {
-      if (origin && (origin.endsWith('kwondns.site') || origin.endsWith('kwondns.com'))) callback(null, true);
+      if (origin?.endsWith('kwondns.com')) callback(null, true);
       else callback(null, false);
     },
     methods: ['GET', 'PATCH', 'DELETE', 'POST', 'PUT'],
