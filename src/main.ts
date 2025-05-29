@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
@@ -15,6 +15,6 @@ async function bootstrap() {
     methods: ['GET', 'PATCH', 'DELETE', 'POST', 'PUT'],
     credentials: true,
   });
-  await app.listen(3000);
+  await app.listen(5440);
 }
 bootstrap();

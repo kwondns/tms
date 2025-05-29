@@ -13,8 +13,8 @@ export class UploadService {
     this.s3 = new S3Client({
       region: 'ap-northeast-2',
       credentials: {
-        accessKeyId: this.configService.get<string>('S3_ACCESS'),
-        secretAccessKey: this.configService.get<string>('S3_SECRET'),
+        accessKeyId: this.configService.get<string>('S3_ACCESS_KEY'),
+        secretAccessKey: this.configService.get<string>('S3_SECRET_KEY'),
       },
     });
     this.bucket = `${this.configService.get<string>('S3_BUCKET')}`;

@@ -12,13 +12,13 @@ export class Present {
   content: string;
 
   @Column({
-    type: `${process.env.NODE_ENV === 'production' ? 'timestamp with time zone' : 'datetime'}`,
+    type: 'timestamp with time zone',
     nullable: true,
   })
   startTime: Date;
 
   @Column({
-    type: `${process.env.NODE_ENV === 'production' ? 'timestamp with time zone' : 'datetime'}`,
+    type: 'timestamp with time zone',
     nullable: true,
   })
   endTime: Date;

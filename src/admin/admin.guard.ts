@@ -2,13 +2,13 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Request } from 'express';
 import { TokenService } from './token.service';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { IS_PUBLIC_KEY } from '@/decorators/public.decorator';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
   constructor(
-    private tokenService: TokenService,
-    private reflector: Reflector,
+    private readonly tokenService: TokenService,
+    private readonly reflector: Reflector,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

@@ -11,10 +11,10 @@ export class Past {
   @Column()
   content: string;
 
-  @Column({ type: `${process.env.NODE_ENV === 'production' ? 'timestamp with time zone' : 'datetime'}` })
+  @Column({ type: 'timestamp with time zone' })
   startTime: Date;
 
-  @Column({ type: `${process.env.NODE_ENV === 'production' ? 'timestamp with time zone' : 'datetime'}` })
+  @Column({ type: 'timestamp with time zone' })
   endTime: Date;
 
   @CreateDateColumn()

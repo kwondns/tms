@@ -1,15 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSource } from './dataSource';
-import { DataSource } from 'typeorm';
+import { dataSourceConfig } from '@/db/dataSource';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: () => dataSource,
-      dataSourceFactory: async (options) => {
-        return await new DataSource(options).initialize();
-      },
+      useFactory: () => dataSourceConfig(),
     }),
   ],
 })

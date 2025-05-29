@@ -17,7 +17,7 @@ export abstract class Stack {
   recent: boolean;
 
   @Column({
-    type: `${process.env.NODE_ENV === 'production' ? 'timestamp with time zone' : 'datetime'}`,
+    type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP',
   })
   created_at: string;
@@ -51,62 +51,32 @@ export abstract class StackByCategory {
 
 @ViewEntity({
   schema: 'portfolio',
-  expression:
-    process.env.NODE_ENV === 'production'
-      ? `SELECT category,
+  expression: `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
                FROM portfolio.back_stack
                WHERE recent = true
-               GROUP BY category`
-      : `SELECT category,
-       GROUP_CONCAT(name) AS name,
-       GROUP_CONCAT(url) AS url,
-       GROUP_CONCAT(img) AS img
-FROM back_stack
-WHERE recent = true
-GROUP BY category;
-`,
+               GROUP BY category`,
 })
 export class BackStackByCategory extends StackByCategory {}
 
 @ViewEntity({
   schema: 'portfolio',
-  expression:
-    process.env.NODE_ENV === 'production'
-      ? `SELECT category,
+  expression: `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
                FROM portfolio.front_stack
                WHERE recent = true
                GROUP BY category;
-      `
-      : `SELECT category,
-                GROUP_CONCAT(name) AS name,
-                GROUP_CONCAT(url)  AS url,
-                GROUP_CONCAT(img)  AS img
-         FROM front_stack
-         WHERE recent = true
-         GROUP BY category;
       `,
 })
 export class FrontStackByCategory extends StackByCategory {}
 
 @ViewEntity({
   schema: 'portfolio',
-  expression:
-    process.env.NODE_ENV === 'production'
-      ? `SELECT category,
+  expression: `SELECT category,
                       ARRAY_AGG(name)::text[] AS name, ARRAY_AGG(url)::text[]  AS url, ARRAY_AGG(img) ::text[]  AS img
                FROM portfolio.etc_stack
                WHERE recent = true
                GROUP BY category;
-  `
-      : `SELECT category,
-       GROUP_CONCAT(name) AS name,
-       GROUP_CONCAT(url) AS url,
-       GROUP_CONCAT(img) AS img
-FROM etc_stack
-WHERE recent = true
-GROUP BY category;
-`,
+  `,
 })
 export class EtcStackByCategory extends StackByCategory {}

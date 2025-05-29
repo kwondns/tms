@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   BackStack,
   BackStackByCategory,
@@ -8,8 +8,7 @@ import {
   FrontStack,
   FrontStackByCategory,
 } from '../entities/stack.entity';
-import { EntityManager, Repository } from 'typeorm';
-import { dataSource as myDataSource } from '../../db/dataSource';
+import { DataSource, Repository } from 'typeorm';
 import { StackDto } from '../dtos/stack.dto';
 
 @Injectable()
@@ -21,11 +20,11 @@ export class StackService {
     @InjectRepository(FrontStackByCategory) private frontStackViewRepo: Repository<FrontStackByCategory>,
     @InjectRepository(BackStackByCategory) private backStackViewRepo: Repository<BackStackByCategory>,
     @InjectRepository(EtcStackByCategory) private etcStackViewRepo: Repository<EtcStackByCategory>,
-    @InjectEntityManager(myDataSource.managers) private entityManager: EntityManager,
+    private readonly dataSource: DataSource,
   ) {}
 
   async getStackOthers() {
-    return await this.entityManager.query(
+    return await this.dataSource.query(
       "SELECT * FROM (SELECT *, 'front' as tech FROM portfolio.front_stack UNION ALL SELECT *, 'back' as tech FROM portfolio.back_stack UNION ALL SELECT *, 'etc' as tech FROM portfolio.etc_stack) AS stack WHERE recent = false ORDER BY stack.category",
     );
   }

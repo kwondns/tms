@@ -27,7 +27,7 @@ export class Project {
   visible: boolean;
 
   @Column({
-    type: `${process.env.NODE_ENV === 'production' ? 'timestamp with time zone' : 'datetime'}`,
+    type: 'timestamp with time zone',
     default: () => 'CURRENT_TIMESTAMP',
   })
   created_at: string;
