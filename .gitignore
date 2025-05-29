@@ -60,3 +60,5 @@ test.sqlite
 **/*.http
 
 *.pem
+
+/grafana
