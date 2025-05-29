@@ -2,8 +2,8 @@
 cd /home/ec2-user/be
 rm -f .env
 yarn install --omit=dev
-#echo "[DEBUG] ssl key" >&2
-#wget https://www.amazontrust.com/repository/AmazonRootCA1.pem -O /home/ec2-user/be/dist/database/AmazonRootCA.pem
+echo "[DEBUG] ssl key" >&2
+wget https://www.amazontrust.com/repository/AmazonRootCA1.pem -O /home/ec2-user/be/dist/db/AmazonRootCA.pem
 
 echo "[DEBUG] .env 생성 시작" >&2
 SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query SecretString --output text)

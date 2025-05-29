@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
-// import fs from 'node:fs';
+import fs from 'node:fs';
 
 if (process.env.NODE_ENV === 'development') {
   dotenv.config({ path: '.env.development' });
@@ -24,13 +24,13 @@ export const dataSourceConfig = () => {
     installExtensions: true,
     charset: 'utf8',
   };
-  // if (process.env.NODE_ENV === 'production')
-  // Object.assign(config, {
-  //   ssl: {
-  //     ca: fs.readFileSync(process.env.DB_SSL_PATH),
-  //     rejectUnauthorized: true,
-  //   },
-  // });
+  if (process.env.NODE_ENV === 'production')
+    Object.assign(config, {
+      ssl: {
+        ca: fs.readFileSync(process.env.DB_SSL_PATH),
+        rejectUnauthorized: true,
+      },
+    });
   return config;
 };
 
