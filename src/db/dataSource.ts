@@ -28,7 +28,7 @@ export const dataSourceConfig = () => {
     Object.assign(config, {
       ssl: {
         ca: fs.readFileSync(process.env.DB_SSL_PATH),
-        rejectUnauthorized: true,
+        rejectUnauthorized: false,
       },
     });
   return config;
