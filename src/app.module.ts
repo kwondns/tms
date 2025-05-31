@@ -1,6 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { AdminModule } from './admin/admin.module';
 import { DatabaseModule } from './db/database.module';
@@ -32,7 +31,7 @@ import { winstonConfig } from './libs/generateLog';
     BlogModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) }],
+  providers: [{ provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
