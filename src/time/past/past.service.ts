@@ -5,7 +5,7 @@ import { Between, Repository } from 'typeorm';
 import { PastDto } from '../dtos/past.dto';
 import { Cron } from '@nestjs/schedule';
 import { PastCount, PastCountView } from '../entities/pastCount.entity';
-import { UploadService } from '../../upload/upload.service';
+import { UploadService } from '@/upload/upload.service';
 
 @Injectable()
 export class PastService {

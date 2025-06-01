@@ -1,12 +1,12 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Req, Res } from '@nestjs/common';
-import { AdminService } from './admin.service';
-import { RequestAdminDto } from './dtos/requestAdmin.dto';
+import { AdminService } from '@/admin/admin.service';
+import { RequestAdminDto } from '@/admin/dtos/requestAdmin.dto';
 import { Request, Response } from 'express';
-import { Serialize } from '../interceptors/serialize.interceptor';
-import { ResponseAdminDto } from './dtos/responseAdmin.dto';
-import { Public } from '../decorators/public.decorator';
+import { Serialize } from '@/interceptors/serialize.interceptor';
+import { ResponseAdminDto } from '@/admin/dtos/responseAdmin.dto';
+import { Public } from '@/decorators/public.decorator';
 import { ConfigService } from '@nestjs/config';
-import { parseDuration } from '../libs/parseDuration';
+import { parseDuration } from '@/utils/parseDuration';
 
 declare module 'express' {
   interface Request {
