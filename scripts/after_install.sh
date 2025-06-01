@@ -21,15 +21,18 @@ SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query
   echo "S3_ACCESS_KEY=$(echo $SECRET_JSON | jq -r .s3_access_key)"
   echo "S3_SECRET_KEY$(echo $SECRET_JSON | jq -r .s3_secret_key)"
   echo "S3_ENV=$(echo $SECRET_JSON | jq -r .s3_env)"
+  echo "FILE_DESTROY_DELAY=$(echo $SECRET_JSON | jq -r .file_destroy_delay)"
+  echo "MAIL_USER=$(echo $SECRET_JSON | jq -r .mail_user)"
+  echo "MAIL_PASSWORD=\"$(echo $SECRET_JSON | jq -r .mail_password)\""
+  echo "ELASTICACHE_HOST=$(echo $SECRET_JSON | jq -r .elasticache_host)"
+  echo "ELASTICACHE_PORT=$(echo $SECRET_JSON | jq -r .elasticache_port)"
+  echo "RESET_PASSWORD_SECRET_KEY=$(echo $SECRET_JSON | jq -r .reset_password_secret_key)"
+  echo "RESET_PASSWORD_EXPIRE=$(echo $SECRET_JSON | jq -r .reset_password_expire)"
+  echo "FRONT_URL=$(echo $SECRET_JSON | jq -r .front_url)"
 } > .env
 echo "[DEBUG] .env 생성 완료" >&2
 yarn run mi:prod:g
 yarn run mi:prod:r
-#  echo "RESET_PASSWORD_SECRET_KEY=$(echo $SECRET_JSON | jq -r .reset_password_secret_key)"
-#  echo "RESET_PASSWORD_EXPIRE=$(echo $SECRET_JSON | jq -r .reset_password_expire)"
-#  echo "ELASTICACHE_HOST=$(echo $SECRET_JSON | jq -r .elasticache_host)"
-#  echo "ELASTICACHE_PORT=$(echo $SECRET_JSON | jq -r .elasticache_port)"
-#  echo "FILE_DESTROY_DELAY=$(echo $SECRET_JSON | jq -r .file_destroy_delay)"
 #  echo "GOOGLE_CLIENT_ID=$(echo $SECRET_JSON | jq -r .google_client_id)"
 #  echo "GOOGLE_CLIENT_SECRET=$(echo $SECRET_JSON | jq -r .google_client_secret)"
 #  echo "GOOGLE_REDIRECT_URI=$(echo $SECRET_JSON | jq -r .google_redirect_uri)"
@@ -39,6 +42,3 @@ yarn run mi:prod:r
 #  echo "NAVER_CLIENT_ID=$(echo $SECRET_JSON | jq -r .naver_client_id)"
 #  echo "NAVER_REDIRECT_URI=$(echo $SECRET_JSON | jq -r .naver_redirect_uri)"
 #  echo "NAVER_CLIENT_SECRET=$(echo $SECRET_JSON | jq -r .naver_client_secret)"
-#  echo "FRONT_URL=$(echo $SECRET_JSON | jq -r .front_url)"
-#  echo "MAIL_USER=$(echo $SECRET_JSON | jq -r .mail_user)"
-#  echo "MAIL_PASSWORD=\"$(echo $SECRET_JSON | jq -r .mail_password)\""
