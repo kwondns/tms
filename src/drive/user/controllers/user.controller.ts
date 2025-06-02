@@ -235,7 +235,9 @@ export class UserController {
         ...file,
         originalname: Buffer.from(file.originalname, 'latin1').toString('utf-8'),
       }));
-      newProfileImage = (await this.uploadService.uploadHandler('tms-drive', fixedFiles, updateUserDto.userId))[0];
+      newProfileImage = (
+        await this.uploadService.uploadHandler('tms-drive-user-profile', fixedFiles, updateUserDto.userId)
+      )[0];
     }
     const pipeline = await asyncPipe(
       this.userService.findUserByUserId.bind(this.userService),
