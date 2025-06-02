@@ -5,8 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Admin } from './admin.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenService } from './token.service';
-import { APP_GUARD } from '@nestjs/core';
-import { AdminGuard } from './admin.guard';
 
 @Module({
   imports: [
@@ -16,6 +14,6 @@ import { AdminGuard } from './admin.guard';
     TypeOrmModule.forFeature([Admin]),
   ],
   controllers: [AdminController],
-  providers: [AdminService, TokenService, { provide: APP_GUARD, useClass: AdminGuard }],
+  providers: [AdminService, TokenService],
 })
 export class AdminModule {}

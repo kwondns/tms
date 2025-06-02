@@ -13,7 +13,7 @@ async function bootstrap() {
   app.enableCors({
     origin: (origin, callback) => {
       if (origin?.endsWith('kwondns.com')) callback(null, true);
-      else callback(null, false);
+      else callback(null, true);
     },
     methods: ['GET', 'PATCH', 'DELETE', 'POST', 'PUT'],
     credentials: true,

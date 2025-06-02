@@ -36,6 +36,8 @@ import { PermissionService } from '@/drive/permission/permission.service';
       Agreement,
       Token,
       FileSystem,
+      Folder,
+      File,
       Worksheet,
     ]),
     BullModule.registerQueue({

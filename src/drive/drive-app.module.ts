@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from '@/utils/logger';
-import { APP_GUARD, APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
-import { AuthGuard } from '@/drive/guards/auth.guard';
-import { LoggingInterceptor } from '@/interceptors/logger.interceptor';
+import { RouterModule } from '@nestjs/core';
+// import { LoggingInterceptor } from '@/interceptors/logger.interceptor';
 import { UserModule } from '@/drive/user/user.module';
 import { MailModule } from '@/drive/mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
@@ -68,9 +67,9 @@ import { PermissionModule } from './permission/permission.module';
       },
     ]),
   ],
-  providers: [
-    { provide: APP_GUARD, useClass: AuthGuard },
-    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
-  ],
+  // providers: [
+  //   { provide: APP_GUARD, useClass: AuthGuard },
+  //   { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+  // ],
 })
 export class DriveAppModule {}

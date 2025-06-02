@@ -4,13 +4,12 @@ import { User } from '@/drive/user/entities/user.entity';
 import { Expose, Transform, Type } from 'class-transformer';
 
 export enum FileTag {
-  WORKSHEET = 'worksheet',
-  SCHEMATIC = 'schematic',
+  A = 'A',
+  B = 'B',
   ETC = 'etc',
-  PATTERN = 'pattern',
-  PRINT = 'print',
-  wiive = 'wiive',
-  원단 = 'fabric',
+  C = 'C',
+  D = 'D',
+  E = 'E',
 }
 
 export class CreateFilePayloadDto extends CreateFileSystemDto {

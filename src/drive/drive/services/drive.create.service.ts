@@ -245,7 +245,7 @@ export class DriveCreateService {
       );
 
       const lastFileIndex = await storageCalcPipe({ userId });
-      fileResult = await this.s3Service.uploadHandler('tms-drive', files.slice(0, lastFileIndex), userId);
+      fileResult = await this.s3Service.uploadHandler('tms-drive-user', files.slice(0, lastFileIndex), userId);
       const totalUploadedSize = fileResult.reduce((sum, item) => {
         return sum + (item.success ? item.size : 0);
       }, user.user_storage.storage_used);

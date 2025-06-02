@@ -120,7 +120,7 @@ export class DriveReadService {
       .skip(skip);
 
     // 조건 분기
-    if ([ListCategory.FOLDER, ListCategory.WIIVE].includes(category)) {
+    if ([ListCategory.FOLDER].includes(category)) {
       queryBuilder.andWhere('file_system.type = :category', { category: category });
     } else {
       queryBuilder.andWhere('file_system.type = :fileType AND file_system.tag = :category', {
@@ -202,8 +202,8 @@ export class DriveReadService {
     if (category) {
       if (category === 'folder') {
         queryBuilder.andWhere(`file_system.type =:type`, { type: 'folder' });
-      } else if (category === 'wiive') {
-        queryBuilder.andWhere(`file_system.type =:type`, { type: 'worksheet' });
+        // } else if (category === 'wiive') {
+        //   queryBuilder.andWhere(`file_system.type =:type`, { type: 'worksheet' });
       } else {
         queryBuilder.andWhere(`file_system.tag = :tag`, { tag: category });
       }
@@ -241,8 +241,6 @@ export class DriveReadService {
     if (filter.category) {
       if (filter.category === 'folder') {
         queryBuilder.andWhere(`file_system.type =:type`, { type: 'folder' });
-      } else if (filter.category === 'wiive') {
-        queryBuilder.andWhere(`file_system.type =:type`, { type: 'worksheet' });
       } else {
         queryBuilder.andWhere(`file_system.tag = :tag`, { tag: filter.category });
       }
@@ -263,7 +261,6 @@ export class DriveReadService {
     const folders = await folderQueryBuilder.getMany();
     queryBuilder.andWhere('file_system.type != :type', { type: 'folder' });
     const files = await queryBuilder.getMany();
-    console.log(files);
     return { folders, files };
   }
 

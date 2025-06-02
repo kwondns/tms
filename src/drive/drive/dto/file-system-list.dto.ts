@@ -3,13 +3,12 @@ import { Transform } from 'class-transformer';
 
 export enum ListCategory {
   FOLDER = 'folder',
-  WORKSHEET = 'worksheet',
-  SCHEMATIC = 'schematic',
-  ETC = 'etc',
-  PATTERN = 'pattern',
-  PRINT = 'print',
-  WIIVE = 'wiive',
-  FABRIC = 'fabric',
+  A = 'A',
+  B = 'B',
+  etc = 'etc',
+  C = 'C',
+  D = 'D',
+  E = 'E',
 }
 
 export enum ListTarget {
