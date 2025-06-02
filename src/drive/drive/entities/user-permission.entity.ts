@@ -8,7 +8,7 @@ import { Permission } from '@/drive/drive/entities/permission.entity';
  *
  * 사용자 + 퍼미션
  */
-@Entity()
+@Entity({ schema: 'drive' })
 export class UserPermission {
   @PrimaryGeneratedColumn()
   id: number;

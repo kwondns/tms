@@ -1,7 +1,7 @@
 import { ChildEntity, Column } from 'typeorm';
 import { FileSystem } from '@/drive/drive/entities/file-system.entity';
 
-@ChildEntity()
+@ChildEntity({ schema: 'drive' })
 export class Folder extends FileSystem {
   @Column({ default: false })
   is_root: boolean;

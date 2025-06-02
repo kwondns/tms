@@ -17,7 +17,7 @@ import { Worksheet } from '@/drive/worksheet/entities/worksheet.entity';
 import { FileSystem } from '@/drive/drive/entities/file-system.entity';
 import { UserPermission } from '@/drive/drive/entities/user-permission.entity';
 
-@Entity()
+@Entity({ schema: 'drive' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   user_id: string;

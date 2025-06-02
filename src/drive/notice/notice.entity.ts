@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'drive' })
 export class Notice {
   @PrimaryGeneratedColumn()
   notice_id: number;

@@ -2,7 +2,7 @@ import { ChildEntity, Column } from 'typeorm';
 import { FileSystem } from '@/drive/drive/entities/file-system.entity';
 import { FileTag } from '@/drive/drive/dto/file.dto';
 
-@ChildEntity()
+@ChildEntity({ schema: 'drive' })
 export class File extends FileSystem {
   @Column({ type: 'enum', enum: FileTag })
   tag: FileTag;

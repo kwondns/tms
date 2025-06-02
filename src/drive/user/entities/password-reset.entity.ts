@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'drive' })
 export class PasswordReset {
   @PrimaryGeneratedColumn()
   id: number;
