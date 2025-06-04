@@ -244,7 +244,11 @@ export class UserController {
       this.userService.setUserName.bind(this.userService, updateUserDto.name),
       this.userService.setUserProfileImg.bind(
         this.userService,
-        files.length >= 1 && newProfileImage?.success ? newProfileImage.filePath : null,
+        files.length >= 1 && newProfileImage?.success
+          ? newProfileImage.filePath
+          : updateUserDto.profileImg === 'null'
+            ? 'null'
+            : null,
       ),
       this.userService.setIsInitializedToTrue.bind(this.userService),
       this.userService.updateUser.bind(this.userService),

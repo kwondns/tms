@@ -1,4 +1,4 @@
-import { IsEmail, IsJWT, IsString, IsStrongPassword, IsUUID } from 'class-validator';
+import { IsEmail, IsJWT, IsOptional, IsString, IsStrongPassword, IsUUID } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 export class RequestResetPasswordDto {
@@ -25,6 +25,10 @@ export class UpdateUserDto {
 
   @IsString()
   name: string;
+
+  @IsString()
+  @IsOptional()
+  profileImg: string;
 }
 
 export class UpdateUserResponseDto {

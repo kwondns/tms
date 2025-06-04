@@ -6,7 +6,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 module.exports = {
   apps: [
     {
-      name: 'nestjs',
+      name: 'TMS',
       script: './dist/main.js',
       instances: 'max',
       exec_mode: 'cluster',
