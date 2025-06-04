@@ -312,7 +312,7 @@ export class DriveReadService {
 
   async addFileToArchive(file: File, archive: archiver.Archiver) {
     const relativePath = this.getRelativePath(file);
-    const s3Stream = await this.s3Service.getFileStream('tms-drive', file);
+    const s3Stream = await this.s3Service.getFileStream('tms-drive-user', file);
     archive.append(s3Stream, { name: relativePath });
   }
 

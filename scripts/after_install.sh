@@ -29,6 +29,7 @@ SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query
   echo "RESET_PASSWORD_SECRET_KEY=$(echo $SECRET_JSON | jq -r .reset_password_secret_key)"
   echo "RESET_PASSWORD_EXPIRE=$(echo $SECRET_JSON | jq -r .reset_password_expire)"
   echo "FRONT_URL=$(echo $SECRET_JSON | jq -r .front_url)"
+  echo "S3_TMP_ARCHIVE_BUCKET=$(echo $SECRET_JSON | jq -r .s3_tmp_archive_bucket)"
 } > .env
 echo "[DEBUG] .env 생성 완료" >&2
 yarn run mi:prod:g
@@ -38,7 +39,6 @@ yarn run mi:prod:r
 #  echo "GOOGLE_REDIRECT_URI=$(echo $SECRET_JSON | jq -r .google_redirect_uri)"
 #  echo "KAKAO_CLIENT_ID=$(echo $SECRET_JSON | jq -r .kakao_client_id)"
 #  echo "KAKAO_REDIRECT_URI=$(echo $SECRET_JSON | jq -r .kakao_redirect_uri)"
-#  echo "S3_TMP_ARCHIVE_BUCKET=$(echo $SECRET_JSON | jq -r .s3_tmp_archive_bucket)"
 #  echo "NAVER_CLIENT_ID=$(echo $SECRET_JSON | jq -r .naver_client_id)"
 #  echo "NAVER_REDIRECT_URI=$(echo $SECRET_JSON | jq -r .naver_redirect_uri)"
 #  echo "NAVER_CLIENT_SECRET=$(echo $SECRET_JSON | jq -r .naver_client_secret)"

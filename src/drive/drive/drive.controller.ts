@@ -289,7 +289,11 @@ export class DriveController {
   async downloadSingleFile(@Param('fileSystemId') fileSystemId: string, @Body() body: { userId: string }) {
     const { fileSystem } = await this.driveReadService.findFileSystem({ id: fileSystemId, userId: body.userId });
     if (fileSystem.type === 'file') {
-      return await this.s3Service.generatePresignedUrl('tms-drive', (fileSystem as File).storage_path, fileSystem.name);
+      return await this.s3Service.generatePresignedUrl(
+        'tms-drive-user',
+        (fileSystem as File).storage_path,
+        fileSystem.name,
+      );
     } else if (fileSystem.type === 'folder') {
       const job = await this.driveReadService.addDownloadQueue(fileSystemId, body.userId);
       return { jobId: job.id };
