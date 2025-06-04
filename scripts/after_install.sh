@@ -19,7 +19,7 @@ SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query
   echo "REFRESH_SECRET_KEY=$(echo $SECRET_JSON | jq -r .refresh_secret_key)"
   echo "REFRESH_EXPIRE=$(echo $SECRET_JSON | jq -r .refresh_expire)"
   echo "S3_ACCESS_KEY=$(echo $SECRET_JSON | jq -r .s3_access_key)"
-  echo "S3_SECRET_KEY$(echo $SECRET_JSON | jq -r .s3_secret_key)"
+  echo "S3_SECRET_KEY=$(echo $SECRET_JSON | jq -r .s3_secret_key)"
   echo "S3_ENV=$(echo $SECRET_JSON | jq -r .s3_env)"
   echo "FILE_DESTROY_DELAY=$(echo $SECRET_JSON | jq -r .file_destroy_delay)"
   echo "MAIL_USER=$(echo $SECRET_JSON | jq -r .mail_user)"
