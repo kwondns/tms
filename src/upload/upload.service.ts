@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DeleteObjectsCommand, ListObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { randomBytes } from 'crypto';
+import AppConfig from '@/app.config';
 
 @Injectable()
 export class UploadService {
@@ -9,20 +10,20 @@ export class UploadService {
   bucket: string;
   putPromises: any[];
   putResults: string[];
-  constructor(private configService: ConfigService) {
+  constructor(@Inject(AppConfig.KEY) private readonly config: ConfigType<typeof AppConfig>) {
     this.s3 = new S3Client({
       region: 'ap-northeast-2',
       credentials: {
-        accessKeyId: this.configService.get<string>('S3_ACCESS_KEY'),
-        secretAccessKey: this.configService.get<string>('S3_SECRET_KEY'),
+        accessKeyId: this.config.s3.s3Access,
+        secretAccessKey: this.config.s3.s3Secret,
       },
     });
-    this.bucket = `${this.configService.get<string>('S3_BUCKET')}`;
+    this.bucket = 'tms';
     this.putPromises = [];
     this.putResults = [];
   }
   async uploadHandler(path: string, files: Array<Express.Multer.File>, num: number, uri?: string) {
-    const env = this.configService.get<string>('S3_ENV');
+    const env = this.config.s3.s3Env;
     if (this.putResults.length >= num) this.putResults = [];
     this.putPromises = [];
     for (const file of files) {

@@ -11,7 +11,7 @@ import { PastCount, PastCountView } from './entities/pastCount.entity';
 import { Present } from './entities/present.entity';
 import { Future } from './entities/future.entity';
 import { FutureBox } from './entities/futureBox.entity';
-import { UploadService } from '../upload/upload.service';
+import { UploadService } from '@/upload/upload.service';
 import { PresentGateway } from './events/present.gateway';
 
 @Module({

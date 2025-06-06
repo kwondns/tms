@@ -1,7 +1,8 @@
 import { forwardRef, Inject, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { AdminService } from './admin.service';
+import AppConfig from '@/drive/app.config';
 
 type PayloadType = {
   sub: string;
@@ -20,7 +21,7 @@ export class TokenService {
     @Inject(forwardRef(() => AdminService))
     private adminService: AdminService,
     private jwtService: JwtService,
-    private configService: ConfigService,
+    @Inject(AppConfig.KEY) private readonly config: ConfigType<typeof AppConfig>,
   ) {}
 
   async generateRefresh(payload: RefreshPayloadType) {
@@ -28,8 +29,8 @@ export class TokenService {
       const admin = await this.adminService.findOne(payload.sub);
       const { iat, exp, ...others } = payload;
       admin.refresh_token = await this.jwtService.signAsync(others, {
-        secret: this.configService.get('TOKEN_REFRESH_SECRET'),
-        expiresIn: this.configService.get('TOKEN_REFRESH_EXPIRE'),
+        secret: this.config.jwt.refreshSecret,
+        expiresIn: this.config.jwt.refreshExpire,
       });
       admin.refresh_version += 1;
 
@@ -43,8 +44,8 @@ export class TokenService {
     try {
       const { iat, exp, ...others } = payload;
       return await this.jwtService.signAsync(others, {
-        secret: this.configService.get('TOKEN_ACCESS_SECRET'),
-        expiresIn: this.configService.get('TOKEN_ACCESS_EXPIRE'),
+        secret: this.config.jwt.accessSecret,
+        expiresIn: this.config.jwt.accessExpire,
       });
     } catch (error) {
       throw new InternalServerErrorException();
@@ -69,7 +70,7 @@ export class TokenService {
 
   async validateToken<T extends PayloadType>(token: string, type: 'ACCESS' | 'REFRESH') {
     return await this.jwtService.verifyAsync<T>(token, {
-      secret: this.configService.get(`TOKEN_${type}_SECRET`),
+      secret: this.config.jwt[`${type}Secret`],
     });
   }
 }
