@@ -92,6 +92,7 @@ export class DriveDeleteService {
     }
 
     // 2. 남은 배열: storage_path와 size가 모두 null이 아닌 파일만 반환
+    console.log(files);
     return files.filter((f) => f.storage_path !== null && f.size !== null) as {
       id: string;
       size: number;
@@ -173,7 +174,7 @@ export class DriveDeleteService {
         this.deleteNotFileTypeFileSystem.bind(this, queryRunner),
         this.decreaseUserStorageUsed.bind(this, queryRunner),
         (files) => execFuncOnly(this.hardDeleteEntireTree.bind(this, queryRunner, fileId), files),
-        this.s3Service.bulkDelete.bind(this.s3Service, 'tms-drive'),
+        this.s3Service.bulkDelete.bind(this.s3Service, 'tms-drive-user'),
       );
       await pipeline(fileId);
       await queryRunner.commitTransaction();
