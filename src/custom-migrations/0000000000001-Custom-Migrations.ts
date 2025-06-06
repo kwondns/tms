@@ -1,6 +1,10 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 export class Migrations0000000000001 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query('CREATE SCHEMA IF NOT EXISTS portfolio;');
+    await queryRunner.query('CREATE SCHEMA IF NOT EXISTS blog;');
+    await queryRunner.query('CREATE SCHEMA IF NOT EXISTS timeline;');
+
     await queryRunner.query(`
     CREATE OR REPLACE FUNCTION get_choseong(input_text TEXT)
     RETURNS TEXT AS $$
@@ -31,6 +35,9 @@ export class Migrations0000000000001 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query('DROP SCHEMA IF EXISTS portfolio CASCADE;');
+    await queryRunner.query('DROP SCHEMA IF EXISTS blog CASCADE;');
+    await queryRunner.query('DROP SCHEMA IF EXISTS timeline CASCADE;');
     await queryRunner.query(`DROP FUNCTION IF EXISTS get_choseong`);
   }
 }

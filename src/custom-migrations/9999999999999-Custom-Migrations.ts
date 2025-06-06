@@ -2,10 +2,6 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migrations9999999999999 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('CREATE SCHEMA IF NOT EXISTS portfolio;');
-    await queryRunner.query('CREATE SCHEMA IF NOT EXISTS blog;');
-    await queryRunner.query('CREATE SCHEMA IF NOT EXISTS timeline;');
-
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS ltree;`);
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS pg_trgm;`);
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS pg_stat_statements`);
@@ -50,10 +46,6 @@ export class Migrations9999999999999 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('DROP SCHEMA IF EXISTS portfolio CASCADE;');
-    await queryRunner.query('DROP SCHEMA IF EXISTS blog CASCADE;');
-    await queryRunner.query('DROP SCHEMA IF EXISTS timeline CASCADE;');
-
     // 인덱스 제거
     await queryRunner.query(`DROP INDEX "IDX_LTREE_PATH_GIST"`);
     await queryRunner.query(`DROP INDEX "IDX_OWNER_NAME"`);
