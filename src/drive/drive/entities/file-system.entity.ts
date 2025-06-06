@@ -15,7 +15,7 @@ import {
 import { User } from '@/drive/user/entities/user.entity';
 import { Permission } from '@/drive/drive/entities/permission.entity';
 
-@Entity({ schema: 'drive' })
+@Entity()
 @Tree('closure-table')
 @TableInheritance({ column: { type: 'varchar', name: 'discriminator' } })
 @Unique(['parent', 'name', 'deleted_at'])

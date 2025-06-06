@@ -1,7 +1,7 @@
 import { Column, DeleteDateColumn, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '@/drive/user/entities/user.entity';
 
-@Entity({ schema: 'drive' })
+@Entity()
 export class UserStorage {
   @PrimaryGeneratedColumn('uuid')
   id: string;

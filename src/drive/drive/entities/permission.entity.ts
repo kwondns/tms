@@ -14,7 +14,7 @@ export enum PermissionRole {
  *
  * 사용자 퍼미션 + 파일시스템
  */
-@Entity({ schema: 'drive' })
+@Entity()
 export class Permission {
   @PrimaryGeneratedColumn('uuid')
   id: string;

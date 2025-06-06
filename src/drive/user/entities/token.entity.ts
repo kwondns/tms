@@ -1,6 +1,6 @@
 import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ schema: 'drive' })
+@Entity()
 export class Token {
   @PrimaryGeneratedColumn()
   id: number;

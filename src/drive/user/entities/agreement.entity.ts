@@ -1,6 +1,6 @@
 import { AfterUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ schema: 'drive' })
+@Entity()
 export class Agreement {
   @PrimaryGeneratedColumn()
   id: number;

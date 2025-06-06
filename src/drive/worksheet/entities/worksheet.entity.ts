@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, Prim
 import { User } from '@/drive/user/entities/user.entity';
 import type { WorksheetFileSystem } from '@/drive/drive/entities/worksheet-file-system.entity';
 
-@Entity({ schema: 'drive' })
+@Entity()
 export class Worksheet {
   @PrimaryGeneratedColumn('uuid')
   worksheet_id: string;

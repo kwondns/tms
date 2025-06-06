@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ schema: 'drive' })
+@Entity()
 export class EmailAuth {
   @PrimaryGeneratedColumn()
   id: number;
