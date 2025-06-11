@@ -1,4 +1,4 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class StackDto {
   @IsString()
@@ -15,4 +15,12 @@ export class StackDto {
 
   @IsBoolean()
   recent: boolean;
+
+  @IsOptional()
+  @IsString()
+  tech?: string;
+
+  @IsOptional()
+  @IsString()
+  userId?: string;
 }

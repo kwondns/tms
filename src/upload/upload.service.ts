@@ -40,7 +40,7 @@ export class UploadService {
   async putS3(path: string, env: string, file: Express.Multer.File, uri?: string) {
     const fileExtension = file.originalname.split('.').pop();
     const today = new Date().toLocaleDateString('ko-KR').slice(0, -1).replaceAll('.', '-').replaceAll(' ', '');
-    const filePath = `${env}${uri ?? ''}${today}/${this.genRanHex()}.${fileExtension && fileExtension.toLowerCase()}`;
+    const filePath = `${env}/${uri ?? ''}${today}/${this.genRanHex()}.${fileExtension && fileExtension.toLowerCase()}`;
     this.putResults.push(filePath);
     const ContentDisposition = `attachment; filename*=UTF-8"${encodeURIComponent(file.originalname)}"`;
     const command = new PutObjectCommand({

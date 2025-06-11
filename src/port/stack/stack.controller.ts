@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
-import { Public } from '../../decorators/public.decorator';
-import { Serialize } from '../../interceptors/serialize.interceptor';
+import { Public } from '@/decorators/public.decorator';
+import { Serialize } from '@/interceptors/serialize.interceptor';
 import { ResponseStackDto } from '../dtos/responseStack.dto';
 import { StackDto } from '../dtos/stack.dto';
 import { StackService } from './stack.service';
