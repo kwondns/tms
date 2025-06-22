@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { Public } from '../../decorators/public.decorator';
-import { ProjectDto } from '../dtos/project.dto';
+import { Public } from '@/decorators/public.decorator';
+import { ProjectDto, ProjectUpdateDto } from '../dtos/project.dto';
 import { ProjectService } from './project.service';
-import { Serialize } from '../../interceptors/serialize.interceptor';
+import { Serialize } from '@/interceptors/serialize.interceptor';
 import { ResponseProjectDto } from '../dtos/responseProject.dto';
 
 @Serialize(ResponseProjectDto)
@@ -35,7 +35,7 @@ export class ProjectController {
   }
 
   @Put(':id')
-  async updateProjectById(@Param('id') id: string, @Body() body: ProjectDto) {
+  async updateProjectById(@Param('id') id: string, @Body() body: ProjectUpdateDto) {
     return this.projectService.updateProject(id, body);
   }
 

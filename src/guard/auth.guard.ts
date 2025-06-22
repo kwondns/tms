@@ -22,7 +22,8 @@ export class AuthGuard implements CanActivate {
     try {
       const result = await this.tokenService.validateAccess(token);
       // ! TODO 관리자 계정 생성하여 관리
-      if (request.route.path !== '/notice') request.body.userId = result.user_id;
+      if (request.route.path !== '/drive/notice' && (request.route.path as string).startsWith('/drive'))
+        request.body.userId = result.user_id;
     } catch (e) {
       throw new UnauthorizedException();
     }

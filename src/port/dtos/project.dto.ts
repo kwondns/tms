@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsString, IsUUID } from 'class-validator';
 
 export class ProjectDto {
   @IsString()
@@ -42,4 +42,9 @@ export class ProjectDto {
   @IsArray()
   @IsString({ each: true })
   back_tag: string[];
+}
+
+export class ProjectUpdateDto extends ProjectDto {
+  @IsUUID()
+  id: string;
 }

@@ -19,8 +19,4 @@ export class StackDto {
   @IsOptional()
   @IsString()
   tech?: string;
-
-  @IsOptional()
-  @IsString()
-  userId?: string;
 }

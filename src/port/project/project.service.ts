@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Project } from '../entities/project.entity';
+import { Project } from '@/port/entities/project.entity';
 import { Repository } from 'typeorm';
-import { ProjectMoreDetail } from '../entities/projectMoreDetail.entity';
-import { ProjectDto } from '../dtos/project.dto';
-import { BackTag, FrontTag } from '../entities/projectTag.entity';
-import { ProjectDetail } from '../entities/projectDetail.entity';
+import { ProjectMoreDetail } from '@/port/entities/projectMoreDetail.entity';
+import { ProjectDto, ProjectUpdateDto } from '@/port/dtos/project.dto';
+import { BackTag, FrontTag } from '@/port/entities/projectTag.entity';
+import { ProjectDetail } from '@/port/entities/projectDetail.entity';
 
 @Injectable()
 export class ProjectService {
@@ -54,7 +54,7 @@ export class ProjectService {
     return result;
   }
 
-  async updateProject(id: string, projectAttrs: ProjectDto) {
+  async updateProject(id: string, projectAttrs: ProjectUpdateDto) {
     const project = await this.projectRepo.findOne({
       where: { id },
       relations: ['projectDetail', 'projectMoreDetail', 'back_tag', 'front_tag'],
