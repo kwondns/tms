@@ -61,8 +61,8 @@ export class PastService {
   }
 
   async getCalendarPast(date: string) {
-    const startDate = new Date(date);
-    const endDate = new Date(new Date(date).getTime() + 60 * 1000 * 60 * 24 * 42);
+    const startDate = new Date(new Date(date).getTime() + 60 * 1000 * 60 * 9);
+    const endDate = new Date(new Date(date).getTime() + 60 * 1000 * 60 * 24 * 42 + 60 * 1000 * 60 * 9);
     return await this.pastCountViewRepo
       .createQueryBuilder('view')
       .where('view.date >= :startDate', { startDate })

@@ -5,7 +5,7 @@ export class PastCount {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'timestamp with time zone' })
+  @Column({ type: 'date' })
   date: Date;
 
   @Column({ type: 'int' })
@@ -20,7 +20,8 @@ export class PastCount {
              array_agg(p.title) AS titles,
              count(p.title)     AS titles_count
       FROM timeline.past_count pc
-               LEFT JOIN timeline.past p ON pc.date::date = (p."startTime" AT TIME ZONE 'Asia/Seoul'::text)::date
+        LEFT JOIN timeline.past p
+      ON pc.date = (p."startTime" AT TIME ZONE 'Asia/Seoul')::date
       GROUP BY pc.id;
   `,
 })
