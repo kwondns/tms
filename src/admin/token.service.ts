@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigType } from '@nestjs/config';
-import { AdminService } from './admin.service';
+import { AdminService } from '@/admin/admin.service';
 import AppConfig from '@/drive/app.config';
 
 type PayloadType = {

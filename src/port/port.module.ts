@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Project } from './entities/project.entity';
-import { BackTag, FrontTag, ProjectTag } from './entities/projectTag.entity';
+import { Project } from '@/port/entities/project.entity';
+import { BackTag, FrontTag, ProjectTag } from '@/port/entities/projectTag.entity';
 import {
   BackStack as Backstack,
   BackStackByCategory,
@@ -9,13 +9,13 @@ import {
   EtcStackByCategory,
   FrontStack,
   FrontStackByCategory,
-} from './entities/stack.entity';
-import { StackController } from './stack/stack.controller';
-import { StackService } from './stack/stack.service';
-import { ProjectController } from './project/project.controller';
-import { ProjectService } from './project/project.service';
-import { ProjectMoreDetail } from './entities/projectMoreDetail.entity';
-import { ProjectDetail } from './entities/projectDetail.entity';
+} from '@/port/entities/stack.entity';
+import { StackController } from '@/port/stack/stack.controller';
+import { StackService } from '@/port/stack/stack.service';
+import { ProjectController } from '@/port/project/project.controller';
+import { ProjectService } from '@/port/project/project.service';
+import { ProjectMoreDetail } from '@/port/entities/projectMoreDetail.entity';
+import { ProjectDetail } from '@/port/entities/projectDetail.entity';
 
 @Module({
   imports: [

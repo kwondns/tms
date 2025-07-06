@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { BlogController } from './blog.controller';
-import { BlogService } from './blog.service';
+import { BlogController } from '@/blog/blog.controller';
+import { BlogService } from '@/blog/blog.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Post, PostView } from './entities/post.entity';
-import { PostTag } from './entities/postTag.entity';
-import { PostContent } from './entities/postContent.entity';
-import { Tag, TagCountView } from './entities/tag.entity';
-import { Category, CategoryWithCount } from './entities/category.entity';
+import { Post, PostView } from '@/blog/entities/post.entity';
+import { PostTag } from '@/blog/entities/postTag.entity';
+import { PostContent } from '@/blog/entities/postContent.entity';
+import { Tag, TagCountView } from '@/blog/entities/tag.entity';
+import { Category, CategoryWithCount } from '@/blog/entities/category.entity';
 
 @Module({
   imports: [

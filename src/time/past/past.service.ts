@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Past } from '../entities/past.entity';
+import { Past } from '@/time/entities/past.entity';
 import { Between, Repository } from 'typeorm';
-import { PastDto } from '../dtos/past.dto';
+import { PastDto } from '@/time/dtos/past.dto';
 import { Cron } from '@nestjs/schedule';
-import { PastCount, PastCountView } from '../entities/pastCount.entity';
+import { PastCount, PastCountView } from '@/time/entities/pastCount.entity';
 import { UploadService } from '@/upload/upload.service';
 
 @Injectable()

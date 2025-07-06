@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { Public } from '@/decorators/public.decorator';
-import { ProjectDto, ProjectUpdateDto } from '../dtos/project.dto';
-import { ProjectService } from './project.service';
+import { ProjectDto, ProjectUpdateDto } from '@/port/dtos/project.dto';
+import { ProjectService } from '@/port/project/project.service';
 import { Serialize } from '@/interceptors/serialize.interceptor';
-import { ResponseProjectDto } from '../dtos/responseProject.dto';
+import { ResponseProjectDto } from '@/port/dtos/responseProject.dto';
 
 @Serialize(ResponseProjectDto)
 @Controller('/port/project')

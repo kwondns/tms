@@ -1,5 +1,5 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Project } from './project.entity';
+import { Project } from '@/port/entities/project.entity';
 
 @Entity({ schema: 'portfolio' })
 export class ProjectMoreDetail {

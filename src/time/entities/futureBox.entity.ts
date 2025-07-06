@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Future } from './future.entity';
+import { Future } from '@/time/entities/future.entity';
 
 @Entity({ schema: 'timeline' })
 export class FutureBox {

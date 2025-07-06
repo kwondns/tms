@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, ViewColumn, ViewEntity } from 'typeorm';
-import { Post } from './post.entity';
+import { Post } from '@/blog/entities/post.entity';
 
 @Entity({ schema: 'blog' })
 export class Category {

@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { UploadService } from './upload.service';
+import { UploadService } from '@/upload/upload.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('upload')

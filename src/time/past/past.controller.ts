@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { PastDto } from '@/time/dtos/past.dto';
 import { Public } from '@/decorators/public.decorator';
-import { PastService } from './past.service';
+import { PastService } from '@/time/past/past.service';
 
 @Controller('/time/past')
 export class PastController {

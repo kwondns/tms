@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Post, PostView } from './entities/post.entity';
-import { PostDto } from './dtos/post.dto';
-import { PostTag } from './entities/postTag.entity';
-import { PostContent } from './entities/postContent.entity';
-import { Tag, TagCountView } from './entities/tag.entity';
-import { Category, CategoryWithCount } from './entities/category.entity';
-import { generateColorStyle } from '../libs/generateColor';
-import { PostUpdateDto } from './dtos/postUpdate.dto';
+import { Post, PostView } from '@/blog/entities/post.entity';
+import { PostDto } from '@/blog/dtos/post.dto';
+import { PostTag } from '@/blog/entities/postTag.entity';
+import { PostContent } from '@/blog/entities/postContent.entity';
+import { Tag, TagCountView } from '@/blog/entities/tag.entity';
+import { Category, CategoryWithCount } from '@/blog/entities/category.entity';
+import { generateColorStyle } from '@/libs/generateColor';
+import { PostUpdateDto } from '@/blog/dtos/postUpdate.dto';
 
 @Injectable()
 export class BlogService {

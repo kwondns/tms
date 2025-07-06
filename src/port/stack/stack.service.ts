@@ -7,9 +7,9 @@ import {
   EtcStackByCategory,
   FrontStack,
   FrontStackByCategory,
-} from '../entities/stack.entity';
+} from '@/port/entities/stack.entity';
 import { DataSource, Repository } from 'typeorm';
-import { StackDto } from '../dtos/stack.dto';
+import { StackDto } from '@/port/dtos/stack.dto';
 
 @Injectable()
 export class StackService {

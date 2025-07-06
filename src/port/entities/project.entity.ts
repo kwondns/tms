@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { BackTag, FrontTag } from './projectTag.entity';
-import { ProjectMoreDetail } from './projectMoreDetail.entity';
-import { ProjectDetail } from './projectDetail.entity';
+import { BackTag, FrontTag } from '@/port/entities/projectTag.entity';
+import { ProjectMoreDetail } from '@/port/entities/projectMoreDetail.entity';
+import { ProjectDetail } from '@/port/entities/projectDetail.entity';
 
 @Entity({ schema: 'portfolio' })
 export class Project {

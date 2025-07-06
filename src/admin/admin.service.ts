@@ -1,10 +1,10 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Admin } from './admin.entity';
+import { Admin } from '@/admin/admin.entity';
 import { Repository } from 'typeorm';
 import { scrypt as _scrypt, randomBytes } from 'crypto';
 import { promisify } from 'util';
-import { TokenService } from './token.service';
+import { TokenService } from '@/admin/token.service';
 
 const scrypt = promisify(_scrypt);
 

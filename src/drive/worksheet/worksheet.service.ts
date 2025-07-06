@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateWorksheetDto } from './dto/create-worksheet.dto';
+import { CreateWorksheetDto } from '@/drive/worksheet/dto/create-worksheet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, QueryRunner, Repository, SelectQueryBuilder } from 'typeorm';
 import { Worksheet } from '@/drive/worksheet/entities/worksheet.entity';

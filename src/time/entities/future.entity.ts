@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { FutureBox } from './futureBox.entity';
+import { FutureBox } from '@/time/entities/futureBox.entity';
 
 @Entity({ schema: 'timeline' })
 export class Future {

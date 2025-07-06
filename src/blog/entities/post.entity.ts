@@ -11,9 +11,9 @@ import {
   ViewColumn,
   ViewEntity,
 } from 'typeorm';
-import { PostContent } from './postContent.entity';
-import { Category } from './category.entity';
-import { PostTag } from './postTag.entity';
+import { PostContent } from '@/blog/entities/postContent.entity';
+import { Category } from '@/blog/entities/category.entity';
+import { PostTag } from '@/blog/entities/postTag.entity';
 
 @Entity({ schema: 'blog' })
 export class Post {

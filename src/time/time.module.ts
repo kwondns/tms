@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { PastService } from './past/past.service';
-import { PresentService } from './present/present.service';
-import { FutureService } from './future/future.service';
-import { PresentController } from './present/present.controller';
-import { PastController } from './past/past.controller';
-import { FutureController } from './future/future.controller';
+import { PastService } from '@/time/past/past.service';
+import { PresentService } from '@/time/present/present.service';
+import { FutureService } from '@/time/future/future.service';
+import { PresentController } from '@/time/present/present.controller';
+import { PastController } from '@/time/past/past.controller';
+import { FutureController } from '@/time/future/future.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Past } from './entities/past.entity';
-import { PastCount, PastCountView } from './entities/pastCount.entity';
-import { Present } from './entities/present.entity';
-import { Future } from './entities/future.entity';
-import { FutureBox } from './entities/futureBox.entity';
+import { Past } from '@/time/entities/past.entity';
+import { PastCount, PastCountView } from '@/time/entities/pastCount.entity';
+import { Present } from '@/time/entities/present.entity';
+import { Future } from '@/time/entities/future.entity';
+import { FutureBox } from '@/time/entities/futureBox.entity';
 import { UploadService } from '@/upload/upload.service';
-import { PresentGateway } from './events/present.gateway';
+import { PresentGateway } from '@/time/events/present.gateway';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Past, PastCount, Present, Future, FutureBox, PastCountView])],

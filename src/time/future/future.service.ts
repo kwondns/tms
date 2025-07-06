@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Future } from '../entities/future.entity';
+import { Future } from '@/time/entities/future.entity';
 import { Repository } from 'typeorm';
-import { FutureBox } from '../entities/futureBox.entity';
-import { FutureDto } from '../dtos/future.dto';
-import { FutureBoxDto } from '../dtos/futureBox.dto';
-import { FutureCreateDto } from '../dtos/futureCreate.dto';
-import { FutureBoxCreateDto } from '../dtos/futureBoxCreate.dto';
+import { FutureBox } from '@/time/entities/futureBox.entity';
+import { FutureDto } from '@/time/dtos/future.dto';
+import { FutureBoxDto } from '@/time/dtos/futureBox.dto';
+import { FutureCreateDto } from '@/time/dtos/futureCreate.dto';
+import { FutureBoxCreateDto } from '@/time/dtos/futureBoxCreate.dto';
 
 @Injectable()
 export class FutureService {

@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
-import { TokenService } from './token.service';
+import { TokenService } from '@/admin/token.service';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '@/decorators/public.decorator';
 

@@ -1,5 +1,5 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Post } from './post.entity';
+import { Post } from '@/blog/entities/post.entity';
 
 @Entity({ schema: 'blog' })
 export class PostContent {

@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryColumn, ViewColumn, ViewEntity } from 'typeorm';
-import { PostTag } from './postTag.entity';
+import { PostTag } from '@/blog/entities/postTag.entity';
 
 @Entity({ schema: 'blog' })
 export class Tag {

@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { Public } from '../decorators/public.decorator';
-import { BlogService } from './blog.service';
-import { PostDto } from './dtos/post.dto';
-import { PostUpdateDto } from './dtos/postUpdate.dto';
-import { Serialize } from '../interceptors/serialize.interceptor';
-import { PostNearListDto, PostResponseDto, PostResponseWithCursorDto } from './dtos/postResponse.dto';
-import { CategoryResponseDto } from './dtos/categoryResponse.dto';
-import { TagRankResponseDto } from './dtos/tagRankResponse.dto';
+import { Public } from '@/decorators/public.decorator';
+import { BlogService } from '@/blog/blog.service';
+import { PostDto } from '@/blog/dtos/post.dto';
+import { PostUpdateDto } from '@/blog/dtos/postUpdate.dto';
+import { Serialize } from '@/interceptors/serialize.interceptor';
+import { PostNearListDto, PostResponseDto, PostResponseWithCursorDto } from '@/blog/dtos/postResponse.dto';
+import { CategoryResponseDto } from '@/blog/dtos/categoryResponse.dto';
+import { TagRankResponseDto } from '@/blog/dtos/tagRankResponse.dto';
 
 @Controller('blog')
 export class BlogController {

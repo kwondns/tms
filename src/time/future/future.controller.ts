@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { FutureService } from './future.service';
-import { FutureDto } from '../dtos/future.dto';
-import { FutureBoxDto } from '../dtos/futureBox.dto';
-import { Public } from '../../decorators/public.decorator';
-import { FutureCreateDto } from '../dtos/futureCreate.dto';
-import { FutureBoxCreateDto } from '../dtos/futureBoxCreate.dto';
+import { FutureService } from '@/time/future/future.service';
+import { FutureDto } from '@/time/dtos/future.dto';
+import { FutureBoxDto } from '@/time/dtos/futureBox.dto';
+import { Public } from '@/decorators/public.decorator';
+import { FutureCreateDto } from '@/time/dtos/futureCreate.dto';
+import { FutureBoxCreateDto } from '@/time/dtos/futureBoxCreate.dto';
 
 @Controller('/time/future')
 export class FutureController {

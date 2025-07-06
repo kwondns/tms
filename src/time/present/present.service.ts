@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Present } from '../entities/present.entity';
+import { Present } from '@/time/entities/present.entity';
 import { Repository } from 'typeorm';
-import { PresentDto } from '../dtos/present.dto';
-import { PresentGateway } from '../events/present.gateway';
+import { PresentDto } from '@/time/dtos/present.dto';
+import { PresentGateway } from '@/time/events/present.gateway';
 
 @Injectable()
 export class PresentService {

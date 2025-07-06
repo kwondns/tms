@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Project } from './project.entity';
+import { Project } from '@/port/entities/project.entity';
 
 export abstract class ProjectTag {
   @PrimaryGeneratedColumn()

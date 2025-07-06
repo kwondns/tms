@@ -13,8 +13,8 @@ import { DriveModule } from '@/drive/drive/drive.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { S3Module } from '@/drive/s3/s3.module';
 import { BullModule } from '@nestjs/bullmq';
-import { NoticeModule } from './notice/notice.module';
-import { PermissionModule } from './permission/permission.module';
+import { NoticeModule } from '@/drive/notice/notice.module';
+import { PermissionModule } from '@/drive/permission/permission.module';
 
 @Module({
   imports: [

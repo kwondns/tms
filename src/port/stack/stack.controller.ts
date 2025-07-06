@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { Public } from '@/decorators/public.decorator';
 import { Serialize } from '@/interceptors/serialize.interceptor';
-import { ResponseStackDto } from '../dtos/responseStack.dto';
-import { StackDto } from '../dtos/stack.dto';
-import { StackService } from './stack.service';
+import { ResponseStackDto } from '@/port/dtos/responseStack.dto';
+import { StackDto } from '@/port/dtos/stack.dto';
+import { StackService } from '@/port/stack/stack.service';
 
 @Controller('/port/stack')
 export class StackController {
