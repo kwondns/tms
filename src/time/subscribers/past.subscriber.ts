@@ -1,10 +1,10 @@
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm';
-import { Past } from '../entities/past.entity';
-import { PastCount } from '../entities/pastCount.entity';
-import { Present } from '../entities/present.entity';
+import { Past } from '@/time/entities/past.entity';
+import { PastCount } from '@/time/entities/pastCount.entity';
+import { Present } from '@/time/entities/present.entity';
 
 @EventSubscriber()
-export class PastSub implements EntitySubscriberInterface<Past> {
+export class PastSubscriber implements EntitySubscriberInterface<Past> {
   listenTo(): any {
     return Past;
   }
