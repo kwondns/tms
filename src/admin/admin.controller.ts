@@ -34,6 +34,8 @@ export class AdminController {
     const admin = await this.adminService.signIn(body.username, body.password);
     res.cookie('refreshToken', admin.refresh_token, {
       httpOnly: true,
+      secure: true,
+      sameSite: 'none',
       maxAge: parseDuration(this.config.jwt.refreshExpire),
     });
     res.send({ username: admin.username, accessToken: admin.accessToken });
