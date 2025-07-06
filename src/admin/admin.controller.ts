@@ -53,6 +53,8 @@ export class AdminController {
     const { newRefreshToken, newAccessToken } = await this.adminService.refresh(refreshToken);
     res.cookie('refreshToken', newRefreshToken.refresh_token, {
       httpOnly: true,
+      secure: true,
+      sameSite: 'none',
       maxAge: parseDuration(this.config.jwt.refreshExpire),
     });
     res.send({ accessToken: newAccessToken });
