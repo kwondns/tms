@@ -42,9 +42,9 @@ export class PastService {
     timeZone: 'Asia/Seoul',
   })
   createPastCount() {
-    const date = new Date();
+    const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
     const pastCount = this.pastCountRepo.create({
-      date: date,
+      date: kstDate,
       count: 0,
     });
     return this.pastCountRepo.save(pastCount);
