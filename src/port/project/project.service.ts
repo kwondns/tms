@@ -21,7 +21,7 @@ export class ProjectService {
     const result = await this.projectRepo.find({
       where: { visible: true },
       order: { created_at: 'desc' },
-      relations: ['front_tag', 'back_tag'],
+      relations: ['front_tag', 'back_tag', 'projectDetail'],
     });
     if (result.length === 0) throw new BadRequestException('잘못된 요청입니다.');
     return result;
