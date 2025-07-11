@@ -10,7 +10,7 @@ export class ProjectModalData {
   project: Project;
 
   @Column()
-  content: string;
+  modal_content: string;
 
   @Column()
   modal_role: string;
