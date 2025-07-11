@@ -39,7 +39,7 @@ export class ProjectService {
   async getProjectDetailById(id: string) {
     const result = await this.projectRepo.findOne({
       where: { id },
-      relations: ['projectDetail', 'back_tag', 'front_tag'],
+      relations: ['projectDetail', 'back_tag', 'front_tag', 'project_modal_data'],
     });
     if (!result) throw new BadRequestException('잘못된 요청입니다.');
     return result;

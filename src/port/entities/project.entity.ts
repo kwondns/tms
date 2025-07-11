@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { BackTag, FrontTag } from '@/port/entities/projectTag.entity';
 import { ProjectMoreDetail } from '@/port/entities/projectMoreDetail.entity';
 import { ProjectDetail } from '@/port/entities/projectDetail.entity';
+import { ProjectModalData } from '@/port/entities/projectModalData.entity';
 
 @Entity({ schema: 'portfolio' })
 export class Project {
@@ -45,4 +46,8 @@ export class Project {
   @OneToOne(() => ProjectMoreDetail, (projectMoreDetail) => projectMoreDetail.project, { cascade: true })
   @JoinColumn()
   projectMoreDetail: ProjectMoreDetail;
+
+  @OneToOne(() => ProjectModalData, (projectModalData) => projectModalData.project, { cascade: true })
+  @JoinColumn()
+  project_modal_data: ProjectModalData;
 }
