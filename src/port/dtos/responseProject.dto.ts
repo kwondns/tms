@@ -52,10 +52,10 @@ export class ResponseProjectDto {
   projectMoreDetail: string;
 
   @Expose()
-  @Transform(({ value, obj }) => (value ? obj.project_modal_data.modal_content : null))
+  @Transform(({ obj }) => (obj.project_modal_data ? obj.project_modal_data.modal_content : null))
   modal_content: string;
 
   @Expose()
-  @Transform(({ value, obj }) => (value ? obj.project_modal_data.modal_role : null))
+  @Transform(({ obj }) => (obj.project_modal_data ? obj.project_modal_data.modal_role : null))
   modal_role: string;
 }
