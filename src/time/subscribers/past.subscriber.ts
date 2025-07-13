@@ -58,7 +58,16 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
         1000;
       const pastCount = await event.queryRunner.manager
         .createQueryBuilder(PastCount, 'pc')
-        .where('pc.date::date = :startTime', { startTime: new Date(event.entity.startTime).toDateString() })
+        .where('pc.date::date = :startTime', {
+          startTime: new Date(event.entity.startTime)
+            .toLocaleDateString('ko-KR', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            })
+            .replaceAll('. ', '-')
+            .replaceAll('.', ''),
+        })
         .getOne();
       pastCount.count -= beforeDiffMinute;
       pastCount.count += diffMinute;
