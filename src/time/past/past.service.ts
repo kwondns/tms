@@ -17,9 +17,13 @@ export class PastService {
   ) {}
 
   async getPastDay(date: string) {
+    const inputDate = new Date(date);
+    // KST는 UTC+9이므로 9시간을 빼서 KST 기준 00:00:00을 UTC로 변환
+    const kstStartUTC = new Date(inputDate.getTime() - 9 * 60 * 60 * 1000);
+    const kstEndUTC = new Date(kstStartUTC.getTime() + 24 * 60 * 60 * 1000 - 1);
     return this.pastRepo.find({
       where: {
-        startTime: Between(new Date(date), new Date(new Date(date).getTime() + 60 * 1000 * 60 * 24 - 1)),
+        startTime: Between(kstStartUTC, kstEndUTC),
       },
       order: { created_at: 'asc' },
     });
