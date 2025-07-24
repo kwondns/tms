@@ -20,6 +20,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
         .where('pc.date::date = :startTime', {
           startTime: new Date(event.entity.startTime)
             .toLocaleDateString('ko-KR', {
+              timeZone: 'Asia/Seoul',
               year: 'numeric',
               month: '2-digit',
               day: '2-digit',
@@ -61,6 +62,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
         .where('pc.date::date = :startTime', {
           startTime: new Date(event.entity.startTime)
             .toLocaleDateString('ko-KR', {
+              timeZone: 'Asia/Seoul',
               year: 'numeric',
               month: '2-digit',
               day: '2-digit',
