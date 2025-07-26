@@ -37,7 +37,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
     present.content = null;
     await Promise.all([event.queryRunner.manager.save(PastCount, pastCount), event.queryRunner.manager.save(present)]);
 
-    await axios.post(`${process.env.CHATBOT_URL}/embedding`);
+    await axios.post(`${process.env.CHATBOT_URL}embedding`);
   }
 
   async afterUpdate(event: UpdateEvent<Past>) {
