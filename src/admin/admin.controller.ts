@@ -33,6 +33,7 @@ export class AdminController {
   async signIn(@Body() body: RequestAdminDto, @Res() res: Response) {
     const admin = await this.adminService.signIn(body.username, body.password);
     res.cookie('refreshToken', admin.refresh_token, {
+      domain: '.kwondns.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
@@ -54,6 +55,7 @@ export class AdminController {
     const refreshToken = req.cookies['refreshToken'];
     const { newRefreshToken, newAccessToken } = await this.adminService.refresh(refreshToken);
     res.cookie('refreshToken', newRefreshToken.refresh_token, {
+      domain: '.kwondns.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
