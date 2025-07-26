@@ -42,6 +42,7 @@ module.exports = {
         // NAVER_REDIRECT_URI: process.env.NAVER_REDIRECT_URI,
         // NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
         FRONT_URL: process.env.FRONT_URL,
+        CHATBOT_URL: process.env.CHATBOT_URL,
       },
       log_date_format: 'YYYY-MM-DD HH:mm Z',
       error_file: '/home/ec2-user/be/log/pm2/error.log',

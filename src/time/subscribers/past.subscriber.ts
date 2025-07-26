@@ -2,6 +2,7 @@ import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } 
 import { Past } from '@/time/entities/past.entity';
 import { PastCount } from '@/time/entities/pastCount.entity';
 import { Present } from '@/time/entities/present.entity';
+import axios from 'axios';
 
 @EventSubscriber()
 export class PastSubscriber implements EntitySubscriberInterface<Past> {
@@ -42,6 +43,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
       ]);
 
       await event.queryRunner.commitTransaction();
+      await axios.post(`${process.env.CHATBOT_URL}/embedding`);
     } catch (e) {
       await event.queryRunner.rollbackTransaction();
     }
@@ -76,6 +78,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
       await Promise.all([event.queryRunner.manager.save(PastCount, pastCount)]);
 
       await event.queryRunner.commitTransaction();
+      await axios.post(`${process.env.CHATBOT_URL}/embedding`);
     } catch (e) {
       await event.queryRunner.rollbackTransaction();
     }
