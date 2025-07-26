@@ -30,6 +30,7 @@ SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query
   echo "RESET_PASSWORD_EXPIRE=$(echo $SECRET_JSON | jq -r .reset_password_expire)"
   echo "FRONT_URL=$(echo $SECRET_JSON | jq -r .front_url)"
   echo "S3_TMP_ARCHIVE_BUCKET=$(echo $SECRET_JSON | jq -r .s3_tmp_archive_bucket)"
+  echo "CHATBOT_URL=$(echo $SECRET_JSON | jq -r .chatbot_url)"
 } > .env
 echo "[DEBUG] .env 생성 완료" >&2
 yarn run mi:prod:g
