@@ -1,4 +1,4 @@
-import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm';
+import { EntitySubscriberInterface, EventSubscriber, InsertEvent, TransactionCommitEvent, UpdateEvent } from 'typeorm';
 import { Past } from '@/time/entities/past.entity';
 import { PastCount } from '@/time/entities/pastCount.entity';
 import { Present } from '@/time/entities/present.entity';
@@ -36,8 +36,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
     present.title = null;
     present.content = null;
     await Promise.all([event.queryRunner.manager.save(PastCount, pastCount), event.queryRunner.manager.save(present)]);
-
-    await axios.post(`${process.env.CHATBOT_URL}embedding`);
+    event.queryRunner.data.entity = 'past';
   }
 
   async afterUpdate(event: UpdateEvent<Past>) {
@@ -65,7 +64,11 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
     pastCount.count -= beforeDiffMinute;
     pastCount.count += diffMinute;
     await Promise.all([event.queryRunner.manager.save(PastCount, pastCount)]);
-
-    await axios.post(`${process.env.CHATBOT_URL}/embedding`);
+    event.queryRunner.data.entity = 'past';
+  }
+  async afterTransactionCommit(event: TransactionCommitEvent) {
+    if (event.queryRunner.data?.entity !== 'past') return;
+    await axios.post(`${process.env.CHATBOT_URL}embedding`);
+    delete event.queryRunner.data.entity;
   }
 }
