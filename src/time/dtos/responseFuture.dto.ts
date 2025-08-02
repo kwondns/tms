@@ -32,6 +32,6 @@ export class ResponseFutureBoxDto {
   checked: boolean;
 
   @Type(() => ResponseFutureDto)
-  @Expose()
-  future: ResponseFutureDto[];
+  @Expose({ name: 'future' })
+  futures: ResponseFutureDto[];
 }
