@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FutureDto {
   @IsString()
@@ -11,4 +11,8 @@ export class FutureDto {
   @IsBoolean()
   @IsOptional()
   checked: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  percentage: number;
 }

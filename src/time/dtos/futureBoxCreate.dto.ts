@@ -1,9 +1,10 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
+import { FutureBoxType } from '@/time/entities/futureBox.entity';
 
 export class FutureBoxCreateDto {
   @IsString()
   title: string;
 
-  @IsNumber()
-  priority: number;
+  @IsEnum(FutureBoxType)
+  type: FutureBoxType;
 }

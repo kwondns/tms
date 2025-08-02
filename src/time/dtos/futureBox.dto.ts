@@ -8,10 +8,6 @@ export class FutureBoxDto {
   @IsOptional()
   title: string;
 
-  @IsNumber()
-  @IsOptional()
-  priority: number;
-
   @IsBoolean()
   @IsOptional()
   checked: boolean;
