@@ -36,7 +36,7 @@ export class FutureCheck extends Future {
   @Column({ type: 'boolean', default: false })
   checked: boolean;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'int', nullable: true })
   priority: number;
 }
 
