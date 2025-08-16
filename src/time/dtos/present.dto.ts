@@ -1,6 +1,10 @@
-import { IsDateString, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsObject, IsOptional, IsString, IsUUID } from 'class-validator';
+import { User } from '@/time/user/entities/user.entity';
 
 export class PresentDto {
+  @IsUUID()
+  userId: string;
+
   @IsString()
   @IsOptional()
   title: string;
@@ -16,4 +20,9 @@ export class PresentDto {
   @IsDateString()
   @IsOptional()
   endTime: string;
+}
+
+export class PresentUpdateServiceDto extends PresentDto {
+  @IsObject()
+  user: User;
 }

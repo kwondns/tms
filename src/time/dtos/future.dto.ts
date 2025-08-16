@@ -1,6 +1,9 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class FutureDto {
+  @IsUUID()
+  userId: string;
+
   @IsString()
   id: string;
 
