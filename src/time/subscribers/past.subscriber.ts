@@ -14,9 +14,9 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
     const diffMinute = Math.floor(
       (new Date(event.entity.endTime).getTime() - new Date(event.entity.startTime).getTime()) / 60 / 1000,
     );
-    const pastCount = await event.queryRunner.manager
+    let pastCount = await event.queryRunner.manager
       .createQueryBuilder(PastCount, 'pc')
-      .where('pc.date::date = :startTime', {
+      .where('pc.date::date = :startTime AND pc.user_id = :userId', {
         startTime: new Date(event.entity.startTime)
           .toLocaleDateString('ko-KR', {
             timeZone: 'Asia/Seoul',
@@ -26,11 +26,26 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
           })
           .replaceAll('. ', '-')
           .replaceAll('.', ''),
+        userId: event.entity.user.user_id,
       })
       .getOne();
+
+    if (!pastCount) {
+      const newPastCount = event.queryRunner.manager.getRepository(PastCount).create({
+        date: event.entity.startTime,
+        count: 0,
+        user: event.entity.user,
+      });
+      pastCount = await event.queryRunner.manager.getRepository(PastCount).save(newPastCount);
+    }
+    pastCount.count += diffMinute;
+    await event.queryRunner.manager.save(PastCount, pastCount);
+    event.queryRunner.data.entity = 'past';
     pastCount.count += diffMinute;
 
-    const present = await event.queryRunner.manager.findOne(Present, { where: { id: 1 } });
+    const present = await event.queryRunner.manager.findOne(Present, {
+      where: { user: { user_id: event.entity.user.user_id } },
+    });
     present.startTime = null;
     present.endTime = null;
     present.title = null;
@@ -49,7 +64,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
       1000;
     const pastCount = await event.queryRunner.manager
       .createQueryBuilder(PastCount, 'pc')
-      .where('pc.date::date = :startTime', {
+      .where('pc.date::date = :startTime AND pc.user_id = :userId', {
         startTime: new Date(event.entity.startTime)
           .toLocaleDateString('ko-KR', {
             timeZone: 'Asia/Seoul',
@@ -59,6 +74,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
           })
           .replaceAll('. ', '-')
           .replaceAll('.', ''),
+        userId: event.entity.user.user_id,
       })
       .getOne();
     pastCount.count -= beforeDiffMinute;
