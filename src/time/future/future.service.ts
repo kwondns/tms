@@ -20,7 +20,7 @@ export class FutureService {
   ) {}
 
   async getFutureBox({ user }: { user: User }) {
-    const result = this.futureBoxRepo
+    return this.futureBoxRepo
       .createQueryBuilder('future_box')
       .leftJoinAndSelect('future_box.future', 'future')
       .where('future_box.user = :userId', { userId: user.user_id })
@@ -41,8 +41,6 @@ export class FutureService {
       )
       .orderBy('future_box.order', 'DESC')
       .getMany();
-
-    return result;
   }
 
   async getFutureBoxRecord() {

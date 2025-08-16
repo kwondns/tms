@@ -21,14 +21,13 @@ export class PastService {
   async getPastDay({ user, date }: { user: User; date: string }) {
     const start = new Date(`${date}T00:00:00+09:00`);
     const endDate = new Date(start.getTime() + 24 * 60 * 60 * 1000 - 1);
-    const result = await this.pastRepo.find({
+    return await this.pastRepo.find({
       where: {
         startTime: Between(start, endDate),
         user: { user_id: user.user_id },
       },
       order: { created_at: 'asc' },
     });
-    return result;
   }
 
   async updatePast(body: PastUpdateDto) {
