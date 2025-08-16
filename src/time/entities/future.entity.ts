@@ -29,6 +29,10 @@ export class Future {
   @ManyToOne(() => FutureBox, (futureBox) => futureBox.future)
   @JoinColumn({ name: 'future_box_id' })
   future_box: FutureBox;
+
+  @ManyToOne(() => User, (user) => user.future)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }
 
 @ChildEntity()

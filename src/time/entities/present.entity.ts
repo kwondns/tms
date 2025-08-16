@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '@/time/user/entities/user.entity';
 
 @Entity({ schema: 'timeline' })
 export class Present {
@@ -22,4 +23,8 @@ export class Present {
     nullable: true,
   })
   endTime: Date;
+
+  @OneToOne(() => User, (user) => user.present)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

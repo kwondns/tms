@@ -3,12 +3,16 @@ import {
   CreateDateColumn,
   Entity,
   Generated,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ViewColumn,
   ViewEntity,
 } from 'typeorm';
 import { Future } from '@/time/entities/future.entity';
+import { User } from '@/time/user/entities/user.entity';
 
 export enum FutureBoxType {
   progress = 'progress',
@@ -41,6 +45,10 @@ export class FutureBox {
 
   @Column({ default: false })
   checked: boolean;
+
+  @ManyToOne(() => User, (user) => user.future_box)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }
 
 @ViewEntity({
@@ -52,8 +60,10 @@ export class FutureBox {
       fb.title,
       fb.type,
       fb.created_at,
+      fb.user_id,
       fb.updated_at,
       fb.order,
+      fb.checked,
       CASE 
         WHEN fb.type = 'check' THEN 
           COALESCE(
@@ -76,35 +86,41 @@ export class FutureBox {
         ELSE 0
       END as completed_futures
     FROM timeline.future_box fb
-    LEFT JOIN timeline.future f ON fb.id = f.future_box_id
-    GROUP BY fb.id, fb.title, fb.type, fb.created_at, fb.updated_at, fb.order
+    LEFT JOIN timeline.future f ON fb.id = f.future_box_id AND fb.user_id = f.user_id
+    GROUP BY fb.id, fb.title, fb.type, fb.created_at, fb.updated_at, fb.order, fb.checked, fb.user_id
 `,
 })
 export class FutureBoxProgressView {
-  @Column()
+  @ViewColumn()
   id: string;
 
-  @Column()
+  @ViewColumn()
+  user_id: string;
+
+  @ViewColumn()
   title: string;
 
-  @Column()
+  @ViewColumn()
   type: FutureBoxType;
 
-  @Column()
+  @ViewColumn()
   created_at: string;
 
-  @Column()
+  @ViewColumn()
   updated_at: string;
 
-  @Column()
+  @ViewColumn()
   order: number;
 
-  @Column({ type: 'float' })
+  @ViewColumn()
   progress_ratio: number;
 
-  @Column()
+  @ViewColumn()
   total_futures: number;
 
-  @Column()
+  @ViewColumn()
   completed_futures: number;
+
+  @ViewColumn()
+  checked: boolean;
 }
