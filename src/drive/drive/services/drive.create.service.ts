@@ -11,7 +11,6 @@ import { Folder } from '@/drive/drive/entities/folder.entity';
 import { WorksheetFileSystem } from '@/drive/drive/entities/worksheet-file-system.entity';
 import { PermissionRole } from '@/drive/drive/entities/permission.entity';
 import asyncPipe from '@/utils/asyncPipe';
-import { SaveFolderDto } from '@/drive/drive/dto/folder.dto';
 import { RomanizationSystem, romanize } from '@romanize/korean';
 import { DriveReadService } from '@/drive/drive/services/drive.read.service';
 import { UploadResultType, UploadSuccessType } from '@/drive/s3/s3.type';
@@ -199,7 +198,7 @@ export class DriveCreateService {
     }
 
     try {
-      const pipeline = await asyncPipe<SaveFolderDto>(
+      const pipeline = await asyncPipe(
         this.checkAlreadyExistNameAndMakeUnique.bind(this, type),
         this.driveReadService.findUserAndPass.bind(this.driveReadService),
         this.newFileSystem.bind(this, queryRunner, type),

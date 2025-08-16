@@ -16,7 +16,6 @@ import { Public } from '@/decorators/public.decorator';
 import asyncPipe from '@/utils/asyncPipe';
 import { CreateUserDto, CreateUserResponseDto } from '@/drive/user/dto/create-user.dto';
 import { SignInDto, SignInResponseDto } from '@/drive/user/dto/sign-in.dto';
-import { User } from '@/drive/user/entities/user.entity';
 import { Request } from 'express';
 import { parseDuration } from '@/utils/parseDuration';
 import AppConfig from '@/drive/app.config';
@@ -90,7 +89,7 @@ export class UserController {
   @Post('sign-in')
   @Serialize(SignInResponseDto)
   async signIn(@Body() signInDto: SignInDto, @Req() req: Request) {
-    const pipeline = await asyncPipe<{ user: User; accessToken: string; accessTokenExpiresAt: Date }>(
+    const pipeline = await asyncPipe(
       this.userService.findUser.bind(this.userService),
       this.userService.comparePassword.bind(this.userService, signInDto.password),
       this.tokenService.generateRefreshToken.bind(this.tokenService),
