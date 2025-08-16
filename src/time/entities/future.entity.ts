@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { FutureBox } from '@/time/entities/futureBox.entity';
+import { User } from '@/time/user/entities/user.entity';
 
 @Entity({ schema: 'timeline' })
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
