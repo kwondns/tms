@@ -1,13 +1,22 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  ChildEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  TableInheritance,
+  UpdateDateColumn,
+} from 'typeorm';
 import { FutureBox } from '@/time/entities/futureBox.entity';
+import { User } from '@/time/user/entities/user.entity';
 
 @Entity({ schema: 'timeline' })
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class Future {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ type: 'boolean', default: false })
-  checked: boolean;
 
   @Column()
   content: string;
@@ -19,5 +28,25 @@ export class Future {
   updated_at: string;
 
   @ManyToOne(() => FutureBox, (futureBox) => futureBox.future)
-  box: FutureBox;
+  @JoinColumn({ name: 'future_box_id' })
+  future_box: FutureBox;
+
+  @ManyToOne(() => User, (user) => user.future)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+}
+
+@ChildEntity()
+export class FutureCheck extends Future {
+  @Column({ type: 'boolean', default: false })
+  checked: boolean;
+
+  @Column({ type: 'int', nullable: true })
+  priority: number;
+}
+
+@ChildEntity()
+export class FutureProgress extends Future {
+  @Column({ type: 'int', default: 0 })
+  percentage: number;
 }

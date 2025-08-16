@@ -5,7 +5,6 @@ import { AdminModule } from '@/admin/admin.module';
 import { DatabaseModule } from '@/db/database.module';
 import { PortModule } from '@/port/port.module';
 import { UploadModule } from '@/upload/upload.module';
-import configuration from '@/configuration';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TimeModule } from '@/time/time.module';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -16,17 +15,16 @@ import { MetricsModule } from '@/metrics/metrics.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { DriveAppModule } from '@/drive/drive-app.module';
 import { AuthGuard } from '@/guard/auth.guard';
 import { LoggingInterceptor } from '@/interceptors/logger.interceptor';
-import { UserModule } from '@/drive/user/user.module';
+import AppConfig from '@/app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.aws', process.env.NODE_ENV === 'production' ? '.env' : `.env.${process.env.NODE_ENV}.local`],
-      load: [configuration],
+      load: [AppConfig],
     }),
     WinstonModule.forRoot(winstonConfig),
     ScheduleModule.forRoot(),
@@ -36,11 +34,9 @@ import { UserModule } from '@/drive/user/user.module';
     UploadModule,
     TimeModule,
     BlogModule,
-    DriveAppModule,
     MetricsModule,
     TerminusModule,
     HttpModule,
-    UserModule,
     ThrottlerModule.forRoot({ throttlers: [{ ttl: 60, limit: 10 }] }),
   ],
   controllers: [AppController],
@@ -51,8 +47,4 @@ import { UserModule } from '@/drive/user/user.module';
 })
 export class AppModule implements NestModule {
   configure() {}
-
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(LoggerMiddleware).forRoutes('*');
-  // }
 }

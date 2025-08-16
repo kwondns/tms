@@ -10,13 +10,32 @@ import { Past } from '@/time/entities/past.entity';
 import { PastCount, PastCountView } from '@/time/entities/pastCount.entity';
 import { Present } from '@/time/entities/present.entity';
 import { Future } from '@/time/entities/future.entity';
-import { FutureBox } from '@/time/entities/futureBox.entity';
+import { FutureBox, FutureBoxProgressView } from '@/time/entities/futureBox.entity';
 import { UploadService } from '@/upload/upload.service';
-import { PresentGateway } from '@/time/events/present.gateway';
+import { UserModule } from '@/time/user/user.module';
+import { MailModule } from '@/time/mail/mail.module';
+import { TokenService } from '@/time/user/services/token.service';
+import { User } from '@/time/user/entities/user.entity';
+import { PasswordReset } from '@/time/user/entities/password-reset.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Past, PastCount, Present, Future, FutureBox, PastCountView])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Past,
+      PastCount,
+      Present,
+      Future,
+      FutureBox,
+      PastCountView,
+      FutureBoxProgressView,
+      User,
+      PasswordReset,
+    ]),
+    UserModule,
+    MailModule,
+  ],
   controllers: [PresentController, PastController, FutureController],
-  providers: [PresentGateway, PastService, PresentService, FutureService, UploadService],
+  providers: [PastService, PresentService, FutureService, UploadService, TokenService],
+  exports: [TokenService],
 })
 export class TimeModule {}

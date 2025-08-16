@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { User } from '@/time/user/entities/user.entity';
 
 @Entity({ schema: 'timeline' })
 export class Past {
@@ -22,4 +31,8 @@ export class Past {
 
   @UpdateDateColumn()
   updated_at: string;
+
+  @ManyToOne(() => User, (user) => user.past)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

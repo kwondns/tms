@@ -1,16 +1,15 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class FutureBoxDto {
+  @IsUUID()
+  userId: string;
+
   @IsString()
   id: string;
 
   @IsString()
   @IsOptional()
   title: string;
-
-  @IsNumber()
-  @IsOptional()
-  priority: number;
 
   @IsBoolean()
   @IsOptional()

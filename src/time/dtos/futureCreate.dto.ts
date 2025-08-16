@@ -1,12 +1,22 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { IsNumber, IsObject, IsOptional, IsString, IsUUID } from 'class-validator';
+import { User } from '@/time/user/entities/user.entity';
 
 export class FutureCreateDto {
+  @IsUUID()
+  userId: string;
+
   @IsString()
   content: string;
 
-  @IsBoolean()
-  checked: boolean;
+  @IsNumber()
+  @IsOptional()
+  priority: number;
 
   @IsString()
   boxId: string;
+}
+
+export class FutureCreateServiceDto extends FutureCreateDto {
+  @IsObject()
+  user: User;
 }

@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '@/decorators/public.decorator';
-import { TokenService } from '@/drive/user/services/token.service';
+import { TokenService } from '@/time/user/services/token.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -22,7 +22,10 @@ export class AuthGuard implements CanActivate {
     try {
       const result = await this.tokenService.validateAccess(token);
       // ! TODO 관리자 계정 생성하여 관리
-      if (request.route.path !== '/drive/notice' && (request.route.path as string).startsWith('/drive'))
+      if (
+        (request.route.path !== '/drive/notice' && (request.route.path as string).startsWith('/drive')) ||
+        (request.route.path as string).startsWith('/time')
+      )
         request.body.userId = result.user_id;
     } catch (e) {
       throw new UnauthorizedException();

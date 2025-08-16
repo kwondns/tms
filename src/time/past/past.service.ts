@@ -2,74 +2,97 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Past } from '@/time/entities/past.entity';
 import { Between, Repository } from 'typeorm';
-import { PastDto } from '@/time/dtos/past.dto';
+import { PastCreateDto, PastUpdateDto } from '@/time/dtos/past.dto';
 import { Cron } from '@nestjs/schedule';
 import { PastCount, PastCountView } from '@/time/entities/pastCount.entity';
 import { UploadService } from '@/upload/upload.service';
+import { User } from '@/time/user/entities/user.entity';
 
 @Injectable()
 export class PastService {
   constructor(
-    @InjectRepository(Past) private pastRepo: Repository<Past>,
-    @InjectRepository(PastCount) private pastCountRepo: Repository<PastCount>,
-    @InjectRepository(PastCountView) private pastCountViewRepo: Repository<PastCountView>,
-    private uploadService: UploadService,
+    @InjectRepository(Past) private readonly pastRepo: Repository<Past>,
+    @InjectRepository(PastCount) private readonly pastCountRepo: Repository<PastCount>,
+    @InjectRepository(PastCountView) private readonly pastCountViewRepo: Repository<PastCountView>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly uploadService: UploadService,
   ) {}
 
-  async getPastDay(date: string) {
-    const inputDate = new Date(date);
-    // KST는 UTC+9이므로 9시간을 빼서 KST 기준 00:00:00을 UTC로 변환
-    const kstStartUTC = new Date(inputDate.getTime() - 9 * 60 * 60 * 1000);
-    const kstEndUTC = new Date(kstStartUTC.getTime() + 24 * 60 * 60 * 1000 - 1);
-    return this.pastRepo.find({
+  async getPastDay({ user, date }: { user: User; date: string }) {
+    const start = new Date(`${date}T00:00:00+09:00`);
+    const endDate = new Date(start.getTime() + 24 * 60 * 60 * 1000 - 1);
+    return await this.pastRepo.find({
       where: {
-        startTime: Between(kstStartUTC, kstEndUTC),
+        startTime: Between(start, endDate),
+        user: { user_id: user.user_id },
       },
       order: { created_at: 'asc' },
     });
   }
 
-  async updatePast(id: string, body: PastDto) {
-    const past = await this.pastRepo.findOneBy({ id });
+  async updatePast(body: PastUpdateDto) {
+    const { id, user, ...others } = body;
+    const past = await this.pastRepo.findOne({ where: { id, user: { user_id: user.user_id } } });
     if (!past) throw new NotFoundException('잘못된 과거입니다!');
-    Object.assign(past, body);
+    Object.assign(past, others);
     return this.pastRepo.save(past);
   }
 
-  async createPast(body: PastDto) {
+  async createPast(body: PastCreateDto) {
     const past = this.pastRepo.create(body);
     return this.pastRepo.save(past);
   }
 
+  // ! TODO 사용자 별 생성대신 Past Insert, Update 에 따라 생성하게
+  // ! 그 후 데이터 패칭시에 빈 날짜의 데이터를 채워 넣는 형태로
+  // ! 임시로 모든 유저의 ID로 생성하는 형태
   @Cron('0 0 0 * * *', {
     name: 'createPastCount',
     timeZone: 'Asia/Seoul',
   })
-  createPastCount() {
+  async createPastCount() {
     const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
-    const pastCount = this.pastCountRepo.create({
-      date: kstDate,
-      count: 0,
-    });
-    return this.pastCountRepo.save(pastCount);
+    const userIds = await this.userRepository.find({ select: ['user_id'] });
+    for (const user of userIds) {
+      const pastCount = this.pastCountRepo.create({
+        date: kstDate,
+        count: 0,
+        user: user,
+      });
+      await this.pastCountRepo.save(pastCount);
+    }
   }
 
-  async getMonthPast() {
+  async getMonthPast({ user }: { user: User }) {
     const result = await this.pastCountViewRepo
       .createQueryBuilder('view')
-      .select(['id', "TO_CHAR(date, 'YYYY-MM-DD') as date", 'count', 'titles', 'titles_count'])
+      .select(['id', "TO_CHAR(date, 'YYYY-MM-DD') as date", 'count', 'titles', 'titles_count::int'])
+      .where('view.user_id = :userId', { userId: user.user_id })
       .orderBy('date', 'DESC')
       .limit(30)
       .getRawMany();
     return result.reverse();
   }
 
-  async getCalendarPast(date: string) {
-    const startDate = new Date(new Date(date).getTime() + 60 * 1000 * 60 * 9);
-    const endDate = new Date(new Date(date).getTime() + 60 * 1000 * 60 * 24 * 42 + 60 * 1000 * 60 * 9);
+  async getCalendarPast({ user, date }: { user: User; date: string }) {
+    function getCalendarStartEndDates(year, month) {
+      const firstDay = new Date(year, month - 1, 1);
+
+      const startDayOfWeek = firstDay.getDay();
+
+      const startDate = new Date(firstDay);
+      startDate.setDate(firstDay.getDate() - startDayOfWeek);
+
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 41);
+
+      return { startDate, endDate };
+    }
+    const { startDate, endDate } = getCalendarStartEndDates(date.split('-')[0], date.split('-')[1]);
     return await this.pastCountViewRepo
       .createQueryBuilder('view')
       .where('view.date >= :startDate', { startDate })
+      .andWhere('view.user_id = :userId', { userId: user.user_id })
       .andWhere('view.date < :endDate', { endDate })
       .orderBy('date', 'ASC')
       .limit(42)
@@ -77,7 +100,7 @@ export class PastService {
   }
 
   async cleanUpImage(startTime: string) {
-    const imageList = await this.uploadService.objectList('time', startTime);
+    const imageList = await this.uploadService.objectList('timeline', startTime);
     if (!imageList.Contents || imageList.Contents.length === 0) return false;
 
     const past = await this.pastRepo.findOneBy({ startTime: new Date(startTime) });
