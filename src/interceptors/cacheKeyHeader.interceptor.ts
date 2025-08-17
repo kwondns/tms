@@ -8,7 +8,7 @@ export class CacheKeyHeaderInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
 
-    const userId = request.userId ?? 'guest';
+    const userId = request.body.userId ?? 'guest';
     response.vary('x-cache-key');
     response.setHeader('x-cache-key', `uid-${userId}`);
     response.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=60');
