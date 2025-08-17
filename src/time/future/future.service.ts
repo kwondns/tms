@@ -119,12 +119,10 @@ export class FutureService {
     await queryRunner.startTransaction();
     try {
       const futureBox = queryRunner.manager.getRepository('future_box').create(dto);
-      console.log(futureBox);
       const newFutureBox = await queryRunner.manager.getRepository('future_box').save(futureBox);
       await queryRunner.commitTransaction();
       return newFutureBox;
     } catch (e) {
-      console.log(e);
       await queryRunner.rollbackTransaction();
       throw new InternalServerErrorException(e);
     } finally {
