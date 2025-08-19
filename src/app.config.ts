@@ -30,17 +30,7 @@ export default registerAs('app', () => ({
     frontURL: process.env.FRONT_URL,
     chatbotURL: process.env.CHATBOT_URL,
     fileDestroyDelay: process.env.FILE_DESTROY_DELAY,
+    userId: process.env.USER_ID,
+    demoUser: process.env.DEMO_USER_ID,
   },
-  // oauth: {
-  //   googleClientId: process.env.GOOGLE_CLIENT_ID,
-  //   googleSecret: process.env.GOOGLE_CLIENT_SECRET,
-  //   googleRedirectURI: process.env.GOOGLE_REDIRECT_URI,
-  //
-  //   kakaoClientId: process.env.KAKAO_CLIENT_ID,
-  //   kakaoRedirectURI: process.env.KAKAO_REDIRECT_URI,
-  //
-  //   naverClientId: process.env.NAVER_CLIENT_ID,
-  //   naverRedirectURI: process.env.NAVER_REDIRECT_URI,
-  //   naverSecret: process.env.NAVER_CLIENT_SECRET,
-  // },
 }));
