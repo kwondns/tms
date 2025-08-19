@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Future, FutureCheck, FutureProgress } from '@/time/entities/future.entity';
 import { Brackets, DataSource, Repository } from 'typeorm';
@@ -8,6 +8,9 @@ import { FutureCreateServiceDto } from '@/time/dtos/futureCreate.dto';
 import { FutureBoxCreateServiceDto } from '@/time/dtos/futureBoxCreate.dto';
 import { User } from '@/time/user/entities/user.entity';
 import { FuturePatchDto } from '@/time/dtos/futurePatch.dto';
+import AppConfig from '@/app.config';
+import { ConfigType } from '@nestjs/config';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class FutureService {
@@ -17,6 +20,7 @@ export class FutureService {
     @InjectRepository(FutureBoxProgressView)
     private readonly futureBoxProgressViewRepo: Repository<FutureBoxProgressView>,
     private readonly dataSource: DataSource,
+    @Inject(AppConfig.KEY) private readonly config: ConfigType<typeof AppConfig>,
   ) {}
 
   async getFutureBox({ user }: { user: User }) {
@@ -151,5 +155,56 @@ export class FutureService {
         lastCompletedFuture: await getLastCompletedFuture(futureBox),
       })),
     );
+  }
+  // Demo 계정에 데이터 추가
+  // Future의 상태가 변동 가능하여 모든 Future를 비교 후 업데이트 보다 일괄 삭제 후 일괄 생성을 선택
+  @Cron('0 1 0 * * *', {
+    name: 'duplicateDemoFutureAndBox',
+    timeZone: 'Asia/Seoul',
+  })
+  async duplicateDemoFutureAndBox() {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager.delete(Future, { user: { user_id: this.config.timeline.demoUserId } });
+      await queryRunner.manager.delete(FutureBox, { user: { user_id: this.config.timeline.demoUserId } });
+      const boxes = await queryRunner.manager.find(FutureBox, {
+        where: { user: { user_id: this.config.timeline.userId } },
+      });
+      const idMap = new Map<string, string>();
+      for (const b of boxes) {
+        const demo = queryRunner.manager.create(FutureBox, {
+          ...b,
+          id: undefined,
+          user: { user_id: this.config.timeline.demoUserId },
+        });
+        const saved = await queryRunner.manager.save(demo);
+        idMap.set(b.id, saved.id);
+      }
+
+      // 4) 실제 Future 복제
+      const futures = await queryRunner.manager.find(Future, {
+        where: { user: { user_id: this.config.timeline.userId } },
+      });
+      for (const f of futures) {
+        const demo = queryRunner.manager.create(Future, {
+          ...f,
+          id: undefined,
+          user: { user_id: this.config.timeline.demoUserId },
+          future_box: { id: idMap.get(f.future_box.id) },
+        });
+        // child entity fields
+        if (f instanceof FutureCheck) demo['checked'] = f['checked'];
+        if (f instanceof FutureProgress) demo['percentage'] = f['percentage'];
+        await queryRunner.manager.save(demo);
+      }
+      await queryRunner.commitTransaction();
+    } catch (e) {
+      console.error(`Duplicating Future Failed: ${e}`);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

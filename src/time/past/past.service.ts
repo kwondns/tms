@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Past } from '@/time/entities/past.entity';
 import { Between, Repository } from 'typeorm';
@@ -7,6 +7,8 @@ import { Cron } from '@nestjs/schedule';
 import { PastCount, PastCountView } from '@/time/entities/pastCount.entity';
 import { UploadService } from '@/upload/upload.service';
 import { User } from '@/time/user/entities/user.entity';
+import AppConfig from '@/app.config';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class PastService {
@@ -16,6 +18,7 @@ export class PastService {
     @InjectRepository(PastCountView) private readonly pastCountViewRepo: Repository<PastCountView>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly uploadService: UploadService,
+    @Inject(AppConfig.KEY) private readonly config: ConfigType<typeof AppConfig>,
   ) {}
 
   async getPastDay({ user, date }: { user: User; date: string }) {
@@ -109,5 +112,38 @@ export class PastService {
 
     const cleanResult = await this.uploadService.deleteHandler('time', cleanTargets);
     return cleanResult.Deleted.length;
+  }
+
+  // Demo 계정에 데이터 추가
+  // Past Count는 Subscriber에서 생성되도록 작성
+  @Cron('0 3 0 * * *', {
+    name: 'duplicateDemoPast',
+    timeZone: 'Asia/Seoul',
+  })
+  async duplicateDemoPast() {
+    const yesterdayStart = new Date();
+    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+    yesterdayStart.setHours(0, 0, 0, 0);
+
+    const yesterdayEnd = new Date(yesterdayStart);
+    yesterdayEnd.setDate(yesterdayStart.getDate() + 1);
+
+    const startIso = yesterdayStart.toISOString();
+    const endIso = yesterdayEnd.toISOString();
+
+    const sourceRows = await this.pastRepo.find({
+      where: {
+        user: { user_id: this.config.timeline.userId },
+        created_at: Between(startIso, endIso),
+      },
+    });
+    for (const row of sourceRows) {
+      const demoEntity = this.pastRepo.create({
+        ...row,
+        id: undefined,
+        user: { user_id: this.config.timeline.demoUserId },
+      });
+      await this.pastRepo.save(demoEntity);
+    }
   }
 }
