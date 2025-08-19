@@ -31,6 +31,6 @@ export default registerAs('app', () => ({
     chatbotURL: process.env.CHATBOT_URL,
     fileDestroyDelay: process.env.FILE_DESTROY_DELAY,
     userId: process.env.USER_ID,
-    demoUser: process.env.DEMO_USER_ID,
+    demoUserId: process.env.DEMO_USER_ID,
   },
 }));
