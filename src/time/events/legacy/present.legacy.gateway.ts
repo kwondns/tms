@@ -2,7 +2,8 @@ import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
 @WebSocketGateway({
-  namespace: 'present',
+  namespace: 'present-legacy',
+  path: '/time/legacy/present',
   cors: {
     origin: '*',
   },
