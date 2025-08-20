@@ -18,6 +18,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthGuard } from '@/guard/auth.guard';
 import { LoggingInterceptor } from '@/interceptors/logger.interceptor';
 import AppConfig from '@/app.config';
+import { TimeLegacyModule } from '@/time/time.legacy.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import AppConfig from '@/app.config';
     PortModule,
     UploadModule,
     TimeModule,
+    TimeLegacyModule,
     BlogModule,
     MetricsModule,
     TerminusModule,
