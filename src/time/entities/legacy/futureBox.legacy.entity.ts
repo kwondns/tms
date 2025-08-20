@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Future } from '@/time/entities/legacy/future.legacy.entity';
 
-@Entity({ schema: 'timeline-legacy' })
+@Entity({ schema: 'timeline_legacy' })
 export class FutureBox {
   @PrimaryGeneratedColumn('uuid')
   id: string;

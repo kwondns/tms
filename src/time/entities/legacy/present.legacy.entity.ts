@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ schema: 'timeline-legacy' })
+@Entity({ schema: 'timeline_legacy' })
 export class Present {
   @PrimaryGeneratedColumn()
   id: number;

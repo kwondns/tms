@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, ViewColumn, ViewEntity } from 'typeorm';
 
-@Entity({ schema: 'timeline-legacy' })
+@Entity({ schema: 'timeline_legacy' })
 export class PastCount {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -12,15 +12,15 @@ export class PastCount {
   count: number;
 }
 @ViewEntity({
-  schema: 'timeline-legacy',
+  schema: 'timeline_legacy',
   expression: `
       SELECT pc.id,
              pc.date::date AS date,
              pc.count,
              array_agg(p.title) AS titles,
              count(p.title)     AS titles_count
-      FROM timeline-legacy.past_count pc
-        LEFT JOIN timeline-legacy.past p
+      FROM timeline_legacy.past_count pc
+        LEFT JOIN timeline_legacy.past p
       ON pc.date = (p."startTime" AT TIME ZONE 'Asia/Seoul')::date
       GROUP BY pc.id;
   `,

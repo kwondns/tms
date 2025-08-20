@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { FutureBox } from '@/time/entities/legacy/futureBox.legacy.entity';
 
-@Entity({ schema: 'timeline-legacy' })
+@Entity({ schema: 'timeline_legacy' })
 export class Future {
   @PrimaryGeneratedColumn('uuid')
   id: string;
