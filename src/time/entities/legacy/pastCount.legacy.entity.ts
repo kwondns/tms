@@ -19,8 +19,8 @@ export class PastCount {
              pc.count,
              array_agg(p.title) AS titles,
              count(p.title)     AS titles_count
-      FROM timeline.past_count pc
-        LEFT JOIN timeline.past p
+      FROM timeline-legacy.past_count pc
+        LEFT JOIN timeline-legacy.past p
       ON pc.date = (p."startTime" AT TIME ZONE 'Asia/Seoul')::date
       GROUP BY pc.id;
   `,
