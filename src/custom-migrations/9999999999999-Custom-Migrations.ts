@@ -6,6 +6,7 @@ export class Migrations9999999999999 implements MigrationInterface {
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS pg_trgm;`);
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS pg_stat_statements`);
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS pg_bigm`);
+    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS pg_vector`);
 
     // 계층 구조 최적화 인덱스
     await queryRunner.query(`
@@ -59,5 +60,6 @@ export class Migrations9999999999999 implements MigrationInterface {
     await queryRunner.query(`DROP EXTENSION IF EXISTS ltree`);
     await queryRunner.query(`DROP EXTENSION IF EXISTS pg_stat_statements`);
     await queryRunner.query(`DROP EXTENSION IF EXISTS pg_bigm`);
+    await queryRunner.query(`DROP EXTENSION IF EXISTS pg_vector`);
   }
 }
