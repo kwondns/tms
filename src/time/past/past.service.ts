@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Past } from '@/time/entities/past.entity';
-import { Between, Repository } from 'typeorm';
+import { Between, DataSource, Repository } from 'typeorm';
 import { PastCreateDto, PastUpdateDto } from '@/time/dtos/past.dto';
 import { Cron } from '@nestjs/schedule';
 import { PastCount, PastCountView } from '@/time/entities/pastCount.entity';
@@ -18,6 +18,7 @@ export class PastService {
     @InjectRepository(PastCountView) private readonly pastCountViewRepo: Repository<PastCountView>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly uploadService: UploadService,
+    private readonly dataSource: DataSource,
     @Inject(AppConfig.KEY) private readonly config: ConfigType<typeof AppConfig>,
   ) {}
 
@@ -121,29 +122,40 @@ export class PastService {
     timeZone: 'Asia/Seoul',
   })
   async duplicateDemoPast() {
-    const yesterdayStart = new Date();
-    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-    yesterdayStart.setHours(0, 0, 0, 0);
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const yesterdayStart = new Date();
 
-    const yesterdayEnd = new Date(yesterdayStart);
-    yesterdayEnd.setDate(yesterdayStart.getDate() + 1);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+      yesterdayStart.setHours(0, 0, 0, 0);
 
-    const startIso = yesterdayStart.toISOString();
-    const endIso = yesterdayEnd.toISOString();
+      const yesterdayEnd = new Date(yesterdayStart);
+      yesterdayEnd.setDate(yesterdayStart.getDate() + 1);
+      console.log(`duplicateDemoPast: from ${yesterdayStart}, to ${yesterdayEnd}`);
 
-    const sourceRows = await this.pastRepo.find({
-      where: {
-        user: { user_id: this.config.timeline.userId },
-        created_at: Between(startIso, endIso),
-      },
-    });
-    for (const row of sourceRows) {
-      const demoEntity = this.pastRepo.create({
-        ...row,
-        id: undefined,
-        user: { user_id: this.config.timeline.demoUserId },
+      const sourceRows = await this.pastRepo.find({
+        where: {
+          user: { user_id: this.config.timeline.userId },
+          startTime: Between(yesterdayStart, yesterdayEnd),
+        },
       });
-      await this.pastRepo.save(demoEntity);
+      for (const row of sourceRows) {
+        const demoEntity = this.pastRepo.create({
+          ...row,
+          id: undefined,
+          user: { user_id: this.config.timeline.demoUserId },
+        });
+        await this.pastRepo.save(demoEntity);
+      }
+      console.log(sourceRows.length, 'rows duplicated');
+      await queryRunner.commitTransaction();
+    } catch (e) {
+      console.log(e);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
   }
 }
