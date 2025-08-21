@@ -65,6 +65,7 @@ export class PastService {
       });
       await this.pastCountRepo.save(pastCount);
     }
+    console.log(`${userIds.length} users past count created`);
   }
 
   async getMonthPast({ user }: { user: User }) {

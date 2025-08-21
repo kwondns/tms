@@ -86,9 +86,18 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
   }
   async afterTransactionCommit(event: TransactionCommitEvent) {
     if (event.queryRunner.data?.entity !== 'past') return;
-    await axios.post(`${process.env.CHATBOT_URL}embedding`, {
-      user_id: event.queryRunner.data.userId,
-    });
+    await axios.post(
+      `${process.env.CHATBOT_URL}embedding`,
+      {
+        user_id: event.queryRunner.data.userId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      },
+    );
     delete event.queryRunner.data.entity;
     delete event.queryRunner.data.userId;
   }
