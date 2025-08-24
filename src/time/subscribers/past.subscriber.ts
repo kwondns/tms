@@ -108,6 +108,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
         data: error.response?.data,
         message: error.message,
         url: error.config?.url,
+        requestBody: { user_id: event.queryRunner.data.userId },
       });
     }
   }

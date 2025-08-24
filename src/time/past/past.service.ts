@@ -43,8 +43,12 @@ export class PastService {
   }
 
   async createPast(body: PastCreateDto) {
-    const past = this.pastRepo.create(body);
-    return this.pastRepo.save(past);
+    try {
+      const past = this.pastRepo.create(body);
+      return this.pastRepo.save(past);
+    } catch (e) {
+      return true;
+    }
   }
 
   // ! TODO 사용자 별 생성대신 Past Insert, Update 에 따라 생성하게
@@ -127,13 +131,16 @@ export class PastService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const yesterdayStart = new Date();
+      const now = new Date();
+      const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
 
+      const yesterdayStart = new Date(kstNow);
       yesterdayStart.setDate(yesterdayStart.getDate() - 1);
       yesterdayStart.setHours(0, 0, 0, 0);
 
       const yesterdayEnd = new Date(yesterdayStart);
       yesterdayEnd.setDate(yesterdayStart.getDate() + 1);
+
       console.log(`duplicateDemoPast: from ${yesterdayStart}, to ${yesterdayEnd}`);
 
       const sourceRows = await this.pastRepo.find({

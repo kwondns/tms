@@ -42,10 +42,10 @@ export class PastLegacyService {
   }
 
   @Cron('0 0 0 * * *', {
-    name: 'createPastCount',
+    name: 'createPastLegacyCount',
     timeZone: 'Asia/Seoul',
   })
-  createPastCount() {
+  createPastLegacyCount() {
     const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
     const pastCount = this.pastCountRepo.create({
       date: kstDate,

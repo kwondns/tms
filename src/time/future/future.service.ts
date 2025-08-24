@@ -186,13 +186,25 @@ export class FutureService {
       // 4) 실제 Future 복제
       const futures = await queryRunner.manager.find(Future, {
         where: { user: { user_id: this.config.timeline.userId } },
+        relations: ['future_box'],
       });
       for (const f of futures) {
+        if (!f.future_box) {
+          console.warn(`Future ${f.id} has no future_box`);
+          continue;
+        }
+
+        const newBoxId = idMap.get(f.future_box.id);
+        if (!newBoxId) {
+          console.warn(`No mapping found for future_box.id: ${f.future_box.id}`);
+          continue;
+        }
+
         const demo = queryRunner.manager.create(Future, {
           ...f,
           id: undefined,
           user: { user_id: this.config.timeline.demoUserId },
-          future_box: { id: idMap.get(f.future_box.id) },
+          future_box: { id: newBoxId },
         });
         // child entity fields
         if (f instanceof FutureCheck) demo['checked'] = f['checked'];
