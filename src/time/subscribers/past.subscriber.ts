@@ -86,30 +86,22 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
   }
   async afterTransactionCommit(event: TransactionCommitEvent) {
     if (event.queryRunner.data?.entity !== 'past') return;
-    try {
-      await axios.post(
-        `${process.env.CHATBOT_URL}embedding`,
-        {
-          user_id: event.queryRunner.data.userId,
+    const userId = event.queryRunner.data.userId;
+
+    await axios.post(
+      `${process.env.CHATBOT_URL}embedding`,
+      {
+        user_id: userId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        },
-      );
-      delete event.queryRunner.data.entity;
-      delete event.queryRunner.data.userId;
-    } catch (error) {
-      console.error('임베딩 요청 오류:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        message: error.message,
-        url: error.config?.url,
-        requestBody: { user_id: event.queryRunner.data.userId },
-      });
-    }
+      },
+    );
+
+    delete event.queryRunner.data.entity;
+    delete event.queryRunner.data.userId;
   }
 }

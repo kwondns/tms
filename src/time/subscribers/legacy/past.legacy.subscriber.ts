@@ -36,7 +36,7 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
     present.title = null;
     present.content = null;
     await Promise.all([event.queryRunner.manager.save(PastCount, pastCount), event.queryRunner.manager.save(present)]);
-    event.queryRunner.data.entity = 'past';
+    event.queryRunner.data.entity = 'past-legacy';
   }
 
   async afterUpdate(event: UpdateEvent<Past>) {
@@ -64,10 +64,10 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
     pastCount.count -= beforeDiffMinute;
     pastCount.count += diffMinute;
     await Promise.all([event.queryRunner.manager.save(PastCount, pastCount)]);
-    event.queryRunner.data.entity = 'past';
+    event.queryRunner.data.entity = 'past-legacy';
   }
   async afterTransactionCommit(event: TransactionCommitEvent) {
-    if (event.queryRunner.data?.entity !== 'past') return;
+    if (event.queryRunner.data?.entity !== 'past-legacy') return;
     await axios.post(`${process.env.CHATBOT_URL}embedding`);
     delete event.queryRunner.data.entity;
   }
