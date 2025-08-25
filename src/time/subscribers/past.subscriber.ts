@@ -40,7 +40,6 @@ export class PastSubscriber implements EntitySubscriberInterface<Past> {
     }
     pastCount.count += diffMinute;
     await event.queryRunner.manager.save(PastCount, pastCount);
-    event.queryRunner.data.entity = 'past';
 
     const present = await event.queryRunner.manager.findOne(Present, {
       where: { user: { user_id: event.entity.user.user_id } },
