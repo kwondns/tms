@@ -25,29 +25,44 @@ export class AuthRepository {
   ) {}
 
   async getUserByEmail(mail_address: string) {
-    return this.userRepo.findOne({ where: { mail_address }, relations: ['user_auth', 'user_agreement'] });
+    return this.userRepo.findOne({ where: { mail_address }, relations: ['user_auth', 'user_auth.user_agreement'] });
   }
 
   async getUserById(userId: string) {
-    return this.userRepo.findOneBy({ user_id: userId });
+    return this.userRepo.findOneBy({ user_auth: { user_id: userId } });
   }
 
   async getUserToken(userId: string) {
-    return this.userTokenRepo.findOneBy({ user_id: userId });
+    return this.userTokenRepo.findOneBy({ user_auth: { user_id: userId } });
   }
   async getDeletedUser(mail_address: string) {
     return this.userDeletedRepo.findOne({ where: { mail_address } });
   }
 
   async insertUser(payload: { mail_address: string; password: string; agreements: AgreementType }) {
-    const newUserAuth = this.userAuthRepo.create({ mail_address: payload.mail_address });
-    newUserAuth.password = await bcrypt.hash(payload.password, 10);
-    const newUser = this.userRepo.create({ mail_address: payload.mail_address });
-    let newUserAgreement = this.userAgreementRepo.create();
+    const newUserAuth = this.userAuthRepo.create({
+      mail_address: payload.mail_address,
+      password: await bcrypt.hash(payload.password, 10),
+    });
+    const savedUserAuth = await this.userAuthRepo.save(newUserAuth);
+    const newUser = this.userRepo.create({
+      user_id: savedUserAuth.user_id,
+      mail_address: payload.mail_address,
+    });
+    const savedUser = await this.userRepo.save(newUser);
+
+    // 2) UserAgreement 저장
+    let newUserAgreement = this.userAgreementRepo.create({ user_id: savedUserAuth.user_id });
     newUserAgreement = { ...newUserAgreement, ...payload.agreements };
-    newUserAuth.user = newUser;
-    newUserAuth.user_agreement = newUserAgreement;
-    return await this.userAuthRepo.save(newUser);
+    const savedAgreement = await this.userAgreementRepo.save(newUserAgreement);
+
+    const newUserToken = this.userTokenRepo.create({ user_id: savedUserAuth.user_id });
+    const savedUserToken = await this.userTokenRepo.save(newUserToken);
+
+    savedUserAuth.user = savedUser;
+    savedUserAuth.user_agreement = savedAgreement;
+    savedUserAuth.user_token = savedUserToken;
+    return await this.userAuthRepo.save(savedUserAuth);
   }
 
   async comparePassword(payloadPassword: string, hashedPassword: string) {

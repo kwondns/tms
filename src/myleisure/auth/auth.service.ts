@@ -33,7 +33,7 @@ export class AuthService {
     if (!agreements.myLeisureAgreed || !agreements.personalInfoAgreed)
       throw new BadRequestException('auth.controller.signUpUser:// 필수 약관에 동의가 필요합니다.');
     try {
-      await this.authRepository.insertUser({ mail_address, password, agreements });
+      return await this.authRepository.insertUser({ mail_address, password, agreements });
     } catch (e) {
       throw new BadRequestException('auth.controller.signUpUser');
     }
@@ -45,12 +45,15 @@ export class AuthService {
       const userInfo = await this.authRepository.getUserByEmail(mail_address);
       if (!userInfo || !(await this.authRepository.comparePassword(password, userInfo.user_auth.password)))
         throw new BadRequestException('auth.controller.signInUser:// 이메일 혹은 패스워드가 일치하지 않습니다.');
-      const { user_id, ...info } = userInfo;
-      const refreshToken = await this.authRepository.generateRefreshToken(userInfo.user_id);
-      const accessToken = await this.authRepository.generateAccessToken(userInfo.user_id);
+      const {
+        user_auth: { user_id },
+        ...info
+      } = userInfo;
+      const refreshToken = await this.authRepository.generateRefreshToken(userInfo.user_auth.user_id);
+      const accessToken = await this.authRepository.generateAccessToken(userInfo.user_auth.user_id);
       return {
         data: { userId: user_id, ...info, email: mail_address, ...accessToken, social: 0 },
-        refreshToken,
+        refreshToken: refreshToken.refresh_token,
       };
     } catch (e) {
       throw new BadRequestException('auth.controller.signInUser');
@@ -63,8 +66,7 @@ export class AuthService {
       await this.authRepository.validateRefresh(refreshToken);
       const newRefreshToken = await this.authRepository.generateRefreshToken(user_id);
       const newAccessToken = await this.authRepository.generateAccessToken(user_id);
-      console.log('refreshUser', newRefreshToken, newAccessToken, user_id);
-      return { refreshToken: newRefreshToken, data: { ...newAccessToken } };
+      return { refreshToken: newRefreshToken.refresh_token, data: { ...newAccessToken } };
     } catch (e) {
       throw new BadRequestException('auth.controller.refreshUser');
     }
@@ -73,7 +75,7 @@ export class AuthService {
   async validateMail(mail_address: string) {
     try {
       const result = await this.authRepository.getUserByEmail(mail_address);
-      if (result) return { userId: result.user_id, status: result.user_auth.status };
+      if (result) return { userId: result.user_auth.user_id, status: result.user_auth.status };
       else throw new BadRequestException('auth.controller.validateMail:// 회원정보를 찾을 수 없습니다.');
     } catch (e) {
       throw new BadRequestException('auth.controller.validateMail');
@@ -87,7 +89,7 @@ export class AuthService {
       if (result === null)
         throw new BadRequestException('auth.controller.resetPassword:// 회원정보를 찾을 수 없습니다.');
       const hashedPassword = await this.hashPassword(password);
-      const updateResult = await this.authRepository.updatePassword(result.user_id, hashedPassword);
+      const updateResult = await this.authRepository.updatePassword(result.user_auth.user_id, hashedPassword);
       await this.authRepository.makePasswordResetChange(user_id, null, false);
       return updateResult;
     } catch (e) {
