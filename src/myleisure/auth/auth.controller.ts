@@ -30,7 +30,7 @@ export class AuthController {
     await this.authService.signInUser(payload as CredentialType);
     const result = await this.authService.signInUser(payload as CredentialType);
     res.cookie('refreshToken', result.refreshToken, {
-      domain: 'localhost',
+      domain: 'myleisure.kwondns.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
@@ -44,7 +44,7 @@ export class AuthController {
   async postAuth(@Body() payload: CredentialType, @Res() res: Response) {
     const result = await this.authService.signInUser(payload);
     res.cookie('refreshToken', result.refreshToken, {
-      domain: 'localhost',
+      domain: 'myleisure.kwondns.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
@@ -60,7 +60,7 @@ export class AuthController {
 
     const result = await this.authService.refreshUser({ user_id: payload.userId, refreshToken: refreshToken });
     res.cookie('refreshToken', result.refreshToken, {
-      domain: 'localhost',
+      domain: 'myleisure.kwondns.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
@@ -89,7 +89,7 @@ export class AuthController {
   async postAuthLogOut(@Body() payload: { userId: string }, @Res() res: Response) {
     await this.authService.logout(payload.userId);
     res.cookie('refreshToken', '', {
-      domain: 'localhost',
+      domain: 'myleisure.kwondns.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
