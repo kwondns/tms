@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Post, Query } from '@nestjs/common';
 import { ArchiveService } from '@/myleisure/archive/archive.service';
 import { Serialize } from '@/interceptors/serialize.interceptor';
 import { LeisurePreviewResponseDto } from '@/myleisure/leisure/dtos/leisure.dto';
@@ -8,27 +8,25 @@ export class ArchiveController {
   constructor(private readonly archiveService: ArchiveService) {}
 
   @Get('archive-ids')
-  async getArchiveIds(@Param('user') { user }: { user: string }) {
-    return { status: 200, data: await this.archiveService.getAllArchiveIds(user) };
+  async getArchiveIds(@Body() payload: { userId: string }) {
+    return await this.archiveService.getAllArchiveIds(payload.userId);
   }
 
   @Serialize(LeisurePreviewResponseDto)
   @Get('archive')
-  async getArchive(@Body() body: { userId?: string }, @Param() { user, page }: { user: string; page: number }) {
+  async getArchive(@Body() body: { userId?: string }, @Query() { page }: { page: number }) {
     if (!body.userId) throw new BadRequestException();
-    return {
-      status: 200,
-      data: await this.archiveService.getArchives({ user_id: String(user), page: Number(page) }),
-    };
+    return await this.archiveService.getArchives({ user_id: String(body.userId), page: Number(page) });
   }
 
   @Post('archive')
-  async postArchive(@Body() { user, leisure_id }: { user: string; leisure_id: number }) {
-    return { status: 201, data: await this.archiveService.makeArchive(user, leisure_id) };
+  async postArchive(@Body() body: { userId: string; leisure_id: number }) {
+    return await this.archiveService.makeArchive(body.userId, body.leisure_id);
   }
 
   @Delete('archive')
-  async deleteArchive(@Body() { user, leisure_id }: { user: string; leisure_id: number }) {
-    return { status: 204, data: await this.archiveService.delArchive(String(user), leisure_id) };
+  @HttpCode(204)
+  async deleteArchive(@Body() body: { userId: string; leisure_id: number }) {
+    return await this.archiveService.delArchive(String(body.userId), body.leisure_id);
   }
 }

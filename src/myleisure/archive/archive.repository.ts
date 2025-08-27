@@ -9,12 +9,12 @@ export class ArchiveRepository {
   constructor(@InjectRepository(Archive) private readonly archiveRepo: Repository<Archive>) {}
 
   async getArchiveId(user_id: string) {
-    return this.archiveRepo.find({ where: { user_id }, select: { leisure_id: true } });
+    return this.archiveRepo.find({ where: { user_auth: { user_id } }, select: { leisure_id: true } });
   }
 
   async getArchive(payload: ArchiveGetPayloadType) {
     return this.archiveRepo.find({
-      where: { user_id: payload.user_id },
+      where: { user_auth: { user_id: payload.user_id } },
       select: {
         leisure: {
           id: true,
@@ -33,11 +33,11 @@ export class ArchiveRepository {
   }
 
   async postArchive(user_id: string, leisure_id: number) {
-    const newArchive = this.archiveRepo.create({ user_id, leisure_id });
+    const newArchive = this.archiveRepo.create({ user_auth: { user_id }, leisure_id });
     return this.archiveRepo.save(newArchive);
   }
 
   async removeArchive(user_id: string, leisure_id: number) {
-    return this.archiveRepo.delete({ user_id, leisure_id });
+    return this.archiveRepo.delete({ user_auth: { user_id }, leisure_id });
   }
 }
