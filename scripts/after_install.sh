@@ -33,6 +33,7 @@ SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query
   echo "CHATBOT_URL=$(echo $SECRET_JSON | jq -r .chatbot_url)"
   echo "USER_ID=$(echo $SECRET_JSON | jq -r .timeline_user_id)"
   echo "DEMO_USER_ID=$(echo $SECRET_JSON | jq -r .timeline_demo_user_id)"
+  echo "MYLEISURE_LINK=$(echo $SECRET_JSON | jq -r .myleisure_link)"
 } > .env
 echo "[DEBUG] .env 생성 완료" >&2
 yarn run mi:prod:g

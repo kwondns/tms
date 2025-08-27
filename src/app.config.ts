@@ -33,4 +33,7 @@ export default registerAs('app', () => ({
     userId: process.env.USER_ID,
     demoUserId: process.env.DEMO_USER_ID,
   },
+  myleisure: {
+    link: process.env.MYLEISURE_LINK,
+  },
 }));
