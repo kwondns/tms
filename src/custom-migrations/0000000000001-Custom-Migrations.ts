@@ -5,6 +5,7 @@ export class Migrations0000000000001 implements MigrationInterface {
     await queryRunner.query('CREATE SCHEMA IF NOT EXISTS blog;');
     await queryRunner.query('CREATE SCHEMA IF NOT EXISTS timeline;');
     await queryRunner.query('CREATE SCHEMA IF NOT EXISTS timeline_legacy;');
+    await queryRunner.query('CREATE SCHEMA IF NOT EXISTS myleisure;');
 
     await queryRunner.query(`
     CREATE OR REPLACE FUNCTION get_choseong(input_text TEXT)
@@ -40,6 +41,7 @@ export class Migrations0000000000001 implements MigrationInterface {
     await queryRunner.query('DROP SCHEMA IF EXISTS blog CASCADE;');
     await queryRunner.query('DROP SCHEMA IF EXISTS timeline CASCADE;');
     await queryRunner.query('DROP SCHEMA IF EXISTS timeline_legacy CASCADE;');
+    await queryRunner.query('DROP SCHEMA IF EXISTS myleisure CASCADE;');
     await queryRunner.query(`DROP FUNCTION IF EXISTS get_choseong`);
   }
 }
