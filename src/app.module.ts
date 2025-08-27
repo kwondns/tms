@@ -20,6 +20,7 @@ import { LoggingInterceptor } from '@/interceptors/logger.interceptor';
 import AppConfig from '@/app.config';
 import { TimeLegacyModule } from '@/time/time.legacy.module';
 import { MyLeisureModule } from '@/myleisure/myleisure.module';
+import { DriveAppModule } from '@/drive/drive-app.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { MyLeisureModule } from '@/myleisure/myleisure.module';
     BlogModule,
     MyLeisureModule,
     MetricsModule,
+    DriveAppModule,
     TerminusModule,
     HttpModule,
     ThrottlerModule.forRoot({ throttlers: [{ ttl: 60, limit: 10 }] }),
