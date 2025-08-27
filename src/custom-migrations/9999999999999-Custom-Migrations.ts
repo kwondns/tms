@@ -10,40 +10,52 @@ export class Migrations9999999999999 implements MigrationInterface {
 
     // 계층 구조 최적화 인덱스
     await queryRunner.query(`
-          CREATE INDEX "IDX_LTREE_PATH_GIST"
-            ON file_system USING GIST (ltree_path gist_ltree_ops(siglen=256))
-            WHERE octet_length (ltree_path::text) > 100;
-        `);
+      CREATE INDEX "IDX_LTREE_PATH_GIST"
+        ON file_system USING GIST (ltree_path gist_ltree_ops(siglen=256))
+        WHERE octet_length (ltree_path::text) > 100;
+    `);
     // 소유자-이름 복합 인덱스
     await queryRunner.query(`
-          CREATE INDEX "IDX_OWNER_NAME"
-            ON file_system ("ownerUserId", name) WHERE deleted_at IS NULL;
-        `);
+      CREATE INDEX "IDX_OWNER_NAME"
+        ON file_system ("ownerUserId", name) WHERE deleted_at IS NULL;
+    `);
 
     await queryRunner.query(`
-          CREATE INDEX "IDX_CHOSEONG_BTREE"
-          ON file_system (choseong) WHERE deleted_at IS NULL;
-        `);
+      CREATE INDEX "IDX_CHOSEONG_BTREE"
+        ON file_system (choseong) WHERE deleted_at IS NULL;
+    `);
 
     await queryRunner.query(`
-          CREATE INDEX "IDX_CHOSEONG_BIGM"
-          ON file_system USING GIN (choseong gin_bigm_ops)
-          WITH (fastupdate = off)
-          WHERE deleted_at IS NULL;
-        `);
+      CREATE INDEX "IDX_CHOSEONG_BIGM"
+        ON file_system USING GIN (choseong gin_bigm_ops)
+        WITH (fastupdate = off)
+        WHERE deleted_at IS NULL;
+    `);
 
     await queryRunner.query(`
-          CREATE INDEX "IDX_NAME_BIGM"
-            ON file_system USING GIN (name gin_bigm_ops)
-            WITH (fastupdate = off, gin_pending_list_limit = 4096)
-            WHERE deleted_at IS NULL;
-        `);
+      CREATE INDEX "IDX_NAME_BIGM"
+        ON file_system USING GIN (name gin_bigm_ops)
+        WITH (fastupdate = off, gin_pending_list_limit = 4096)
+        WHERE deleted_at IS NULL;
+    `);
 
     // 소유자 단일 컬럼 인덱스
     await queryRunner.query(`
-          CREATE INDEX "IDX_OWNER_ID"
-            ON file_system ("ownerUserId") WHERE deleted_at IS NULL;
-        `);
+      CREATE INDEX "IDX_OWNER_ID"
+        ON file_system ("ownerUserId") WHERE deleted_at IS NULL;
+    `);
+    await queryRunner.query(`CREATE INDEX idx_name_tsv ON myleisure.leisure
+      USING GIN ( to_tsvector('simple', coalesce (business_name, '')) )`);
+    await queryRunner.query(`CREATE INDEX idx_addr_tsv ON myleisure.leisure
+      USING GIN ( to_tsvector('simple', coalesce (business_address, '')) )`);
+
+    await queryRunner.query(`CREATE INDEX idx_name_addr_tsv ON myleisure.leisure
+      USING GIN (
+      to_tsvector(
+      'simple',
+      coalesce (business_name,'') || ' ' || coalesce (business_address,'')
+      )
+      )`);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
