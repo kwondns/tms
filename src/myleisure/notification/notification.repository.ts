@@ -20,7 +20,7 @@ export class NotificationRepository {
   }
 
   async getUserAlarmRead(user_id: string) {
-    const result = await this.userAlarmRepo.find({ where: { user_id }, select: { alarm_id: true } });
+    const result = await this.userAlarmRepo.find({ where: { user_auth: { user_id } }, select: { alarm_id: true } });
     return result.map((item) => item.alarm_id);
   }
 
