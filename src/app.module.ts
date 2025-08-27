@@ -19,6 +19,7 @@ import { AuthGuard } from '@/guard/auth.guard';
 import { LoggingInterceptor } from '@/interceptors/logger.interceptor';
 import AppConfig from '@/app.config';
 import { TimeLegacyModule } from '@/time/time.legacy.module';
+import { MyLeisureModule } from '@/myleisure/myleisure.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { TimeLegacyModule } from '@/time/time.legacy.module';
     TimeModule,
     TimeLegacyModule,
     BlogModule,
+    MyLeisureModule,
     MetricsModule,
     TerminusModule,
     HttpModule,
