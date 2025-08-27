@@ -11,7 +11,6 @@ export class LeisureRepository {
     try {
       return await this.leisureRepo.findOne({ where: { id }, relations: ['default_leisure'] });
     } catch (e) {
-      console.log(e);
       throw new BadRequestException('leisure.controller.getLeisure');
     }
   }

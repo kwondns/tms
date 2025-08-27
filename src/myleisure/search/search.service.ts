@@ -15,7 +15,6 @@ export class SearchService {
       const count = await this.searchRepository.getSearchCount(payload);
       return { count, result };
     } catch (e) {
-      console.log(e);
       throw new BadRequestException('search.controller.searchLeisure');
     }
   };
@@ -33,7 +32,6 @@ export class SearchService {
       });
       return returnValue;
     } catch (e) {
-      console.log(e);
       throw new BadRequestException('search.controller.searchLeisureMap');
     }
   };
@@ -68,11 +66,9 @@ export class SearchService {
       if (payload?.search) {
         payload.search = this.searchMakeClean(payload.search);
       }
-      console.log(payload);
       const count = await this.searchRepository.getSearchCount({ ...payload, page: 1 });
       return { count };
     } catch (e) {
-      console.log(e);
       throw new BadRequestException('search.controller.searchLeisureMap');
     }
   };
