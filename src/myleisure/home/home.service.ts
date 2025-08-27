@@ -95,7 +95,6 @@ export class HomeService {
         data: [this.shuffleArray(sectionOne), this.shuffleArray(sectionTwo), sectionThree, sectionFour],
       };
     } catch (e) {
-      console.log(e);
       throw new BadRequestException('home.controller.getSections');
     }
   }
