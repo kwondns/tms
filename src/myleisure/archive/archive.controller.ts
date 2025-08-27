@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ArchiveService } from '@/myleisure/archive/archive.service';
 import { Serialize } from '@/interceptors/serialize.interceptor';
 import { LeisurePreviewResponseDto } from '@/myleisure/leisure/dtos/leisure.dto';
@@ -14,8 +14,12 @@ export class ArchiveController {
 
   @Serialize(LeisurePreviewResponseDto)
   @Get('archive')
-  async getArchive(@Param() { user, page }: { user: string; page: number }) {
-    return { status: 200, data: await this.archiveService.getArchives({ user_id: String(user), page: Number(page) }) };
+  async getArchive(@Body() body: { userId?: string }, @Param() { user, page }: { user: string; page: number }) {
+    if (!body.userId) throw new BadRequestException();
+    return {
+      status: 200,
+      data: await this.archiveService.getArchives({ user_id: String(user), page: Number(page) }),
+    };
   }
 
   @Post('archive')

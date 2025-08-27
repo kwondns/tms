@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { LeisureService } from '@/myleisure/leisure/leisure.service';
 import { Serialize } from '@/interceptors/serialize.interceptor';
 import { LeisurePreviewResponseDto } from '@/myleisure/leisure/dtos/leisure.dto';
@@ -10,7 +10,7 @@ export class LeisureController {
 
   @Public()
   @Get()
-  async leisure(@Param() payload: { id: number }) {
+  async leisure(@Query() payload: { id: number }) {
     return await this.leisureService.getLeisure(payload.id);
   }
 

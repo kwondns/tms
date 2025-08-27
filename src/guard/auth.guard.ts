@@ -17,8 +17,9 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     if (request.route.path === '/metrics') return true;
     const token = this.extractToken(request);
+    console.log(request.route.path);
 
-    if (!token) throw new UnauthorizedException();
+    if (!(request.route.path as string).startsWith('/myleisure') && !token) throw new UnauthorizedException();
     try {
       const result = await this.tokenService.validateAccess(token);
       // ! TODO 관리자 계정 생성하여 관리
@@ -28,7 +29,8 @@ export class AuthGuard implements CanActivate {
       )
         request.body.userId = result.user_id;
     } catch (e) {
-      throw new UnauthorizedException();
+      if (!(request.route.path as string).startsWith('/myleisure')) throw new UnauthorizedException();
+      return true;
     }
     return true;
   }
