@@ -7,11 +7,11 @@ export class Archive {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 43, nullable: true })
-  user_id?: string;
-
   @Column()
   leisure_id: number;
+
+  @Column()
+  user_id: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

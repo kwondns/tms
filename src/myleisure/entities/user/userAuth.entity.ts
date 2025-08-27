@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Archive } from '@/myleisure/entities/user/archive.entity';
 import { User } from '@/myleisure/entities/user/user.entity';
 import { UserAgreement } from '@/myleisure/entities/user/userAgreement.entity';
@@ -7,7 +7,7 @@ import { UserToken } from '@/myleisure/entities/user/userToken.entity';
 
 @Entity('user_auth', { schema: 'myleisure' })
 export class UserAuth {
-  @PrimaryColumn({ type: 'varchar', length: 43 })
+  @PrimaryGeneratedColumn('uuid')
   user_id: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -25,22 +25,21 @@ export class UserAuth {
   @CreateDateColumn({ type: 'timestamp' })
   created_at?: Date;
 
-  @OneToMany(() => Archive, (archive) => archive.user_auth)
-  archive: Archive[];
-
   @Column({ type: 'int', default: 0 })
   status: number;
 
-  @OneToOne(() => User, (user) => user.user_auth)
+  @OneToMany(() => Archive, (archive) => archive.user_auth)
+  archive: Archive[];
+
+  @OneToOne(() => User, (user) => user.user_auth, { cascade: true, onDelete: 'CASCADE' })
   user?: User;
 
-  @OneToOne(() => UserAgreement, (userAgreement) => userAgreement.user_auth)
+  @OneToOne(() => UserAgreement, (userAgreement) => userAgreement.user_auth, { cascade: true, onDelete: 'CASCADE' })
   user_agreement?: UserAgreement;
 
-  @OneToMany(() => UserAlarm, (userAlarm) => userAlarm.user_auth)
+  @OneToMany(() => UserAlarm, (userAlarm) => userAlarm.user_auth, { cascade: true, onDelete: 'CASCADE' })
   user_alarm: UserAlarm[];
 
   @OneToOne(() => UserToken, (userToken) => userToken.user_auth, { onDelete: 'CASCADE' })
-  @JoinColumn()
   user_token: UserToken;
 }

@@ -1,9 +1,12 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserAuth } from '@/myleisure/entities/user/userAuth.entity';
 
 @Entity('user', { schema: 'myleisure' })
 export class User {
-  @PrimaryColumn({ type: 'varchar', length: 43 })
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({ type: 'uuid', nullable: false })
   user_id: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -31,6 +34,6 @@ export class User {
   isinitialized?: boolean;
 
   @OneToOne(() => UserAuth, (userAuth) => userAuth.user, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
   user_auth: UserAuth;
 }

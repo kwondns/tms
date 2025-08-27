@@ -3,29 +3,29 @@ import { UserAuth } from '@/myleisure/entities/user/userAuth.entity';
 
 @Entity('user_agreement', { schema: 'myleisure' })
 export class UserAgreement {
-  @PrimaryColumn({ type: 'varchar', length: 43 })
+  @PrimaryColumn()
   user_id: string;
 
   @Column({ default: false })
-  myleisureagreed?: boolean;
+  myLeisureAgreed?: boolean;
 
   @Column({ default: false })
-  personalinfoagreed?: boolean;
+  personalInfoAgreed?: boolean;
 
   @Column({ default: false })
-  marketingagreed?: boolean;
+  marketingAgreed?: boolean;
 
   @Column({ nullable: true })
-  kakaomarketingagreed?: boolean;
+  kakaoMarketingAgreed?: boolean;
 
   @Column({ nullable: true })
-  emailmarketingagreed?: boolean;
+  emailMarketingAgreed?: boolean;
 
   @Column({ nullable: true })
-  pushmarketingagreed?: boolean;
+  pushMarketingAgreed?: boolean;
 
   @Column({ default: false })
-  locationagreed?: boolean;
+  locationAgreed?: boolean;
 
   @CreateDateColumn({ type: 'timestamp' })
   myleisureagreed_at?: Date;

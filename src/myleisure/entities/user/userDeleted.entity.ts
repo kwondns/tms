@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } fro
 
 @Entity('user_deleted', { schema: 'myleisure' })
 export class UserDeleted {
-  @PrimaryColumn('varchar', { name: 'user_id', length: 43 })
+  @PrimaryColumn()
   user_id: string;
 
   @PrimaryColumn('varchar', { name: 'mail_address', length: 255 })

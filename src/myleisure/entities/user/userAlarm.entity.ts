@@ -7,8 +7,8 @@ export class UserAlarm {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 43, nullable: true })
-  user_id?: string;
+  @Column()
+  user_id: string;
 
   @Column({ nullable: true })
   alarm_id?: number;

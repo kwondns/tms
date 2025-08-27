@@ -1,18 +1,18 @@
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { UserAuth } from './userAuth.entity';
 
 @Entity('user_token', { schema: 'myleisure' })
 export class UserToken {
-  @PrimaryColumn('varchar', { length: 43, name: 'user_id' })
+  @PrimaryColumn()
   user_id: string;
 
-  @Column('varchar', { length: 255, name: 'refresh_token' })
+  @Column('varchar', { length: 255, name: 'refresh_token', default: '' })
   refresh_token: string;
 
-  @Column('int', { name: 'token_version' })
+  @Column('int', { name: 'token_version', default: 1 })
   token_version: number;
 
-  @Column('int', { name: 'expires_at' })
+  @Column('int', { name: 'expires_at', nullable: true })
   expires_at: number;
 
   @CreateDateColumn()
@@ -25,5 +25,6 @@ export class UserToken {
   is_password_reset: boolean;
 
   @OneToOne(() => UserAuth, (userAuth) => userAuth.user_token, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user_auth: UserAuth;
 }
