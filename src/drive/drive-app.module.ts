@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from '@/utils/logger';
 import { RouterModule } from '@nestjs/core';
-// import { LoggingInterceptor } from '@/interceptors/logger.interceptor';
 import { UserModule } from '@/drive/user/user.module';
 import { MailModule } from '@/drive/mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
@@ -19,7 +18,6 @@ import { PermissionModule } from '@/drive/permission/permission.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
       envFilePath: [process.env.NODE_ENV === 'production' ? '.env' : `.env.development`],
       load: [appConfig],
     }),
