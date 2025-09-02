@@ -5,7 +5,7 @@ import { AdminModule } from '@/admin/admin.module';
 import { DatabaseModule } from '@/db/database.module';
 import { PortModule } from '@/port/port.module';
 import { UploadModule } from '@/upload/upload.module';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TimeModule } from '@/time/time.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BlogModule } from '@/blog/blog.module';
@@ -51,6 +51,7 @@ import { LoggerMiddleware } from '@/middleware/logger.middleware';
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    { provide: APP_FILTER, useClass: GlobalExceptionFilter },
   ],
 })
 export class AppModule implements NestModule {
