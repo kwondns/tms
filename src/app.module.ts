@@ -1,4 +1,4 @@
-import { Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from '@/app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { AdminModule } from '@/admin/admin.module';
@@ -21,6 +21,8 @@ import AppConfig from '@/app.config';
 import { TimeLegacyModule } from '@/time/time.legacy.module';
 import { MyLeisureModule } from '@/myleisure/myleisure.module';
 import { DriveAppModule } from '@/drive/drive-app.module';
+import { GlobalExceptionFilter } from '@/filters/global-exception.filter';
+import { LoggerMiddleware } from '@/middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -52,5 +54,10 @@ import { DriveAppModule } from '@/drive/drive-app.module';
   ],
 })
 export class AppModule implements NestModule {
-  configure() {}
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude({ path: '/health', method: RequestMethod.ALL }, { path: '/metrics', method: RequestMethod.ALL })
+      .forRoutes('*');
+  }
 }
