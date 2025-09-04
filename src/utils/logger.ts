@@ -1,6 +1,7 @@
 import winston from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
 import dotenv from 'dotenv';
+import LokiTransport from 'winston-loki';
 
 dotenv.config({
   path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
@@ -36,6 +37,16 @@ const createDailyTransport = (level: string) =>
     options: { flags: 'a' },
   });
 
+const lokiTransport = new LokiTransport({
+  host: `${process.env.LOKI_HOST}:${process.env.LOKI_PORT}`,
+  json: true,
+  labels: { app: 'tms-backend', env: process.env.NODE_ENV },
+  format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+  replaceTimestamp: true,
+  batching: true,
+  interval: 5,
+});
+
 export const winstonConfig = {
   level: process.env.LOG_LEVEL || 'info',
   transports: [
@@ -48,5 +59,6 @@ export const winstonConfig = {
     // 2) 일별 파일 로그
     createDailyTransport('info'),
     createDailyTransport('error'),
+    lokiTransport,
   ],
 };
