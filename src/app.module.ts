@@ -23,6 +23,7 @@ import { MyLeisureModule } from '@/myleisure/myleisure.module';
 import { DriveAppModule } from '@/drive/drive-app.module';
 import { GlobalExceptionFilter } from '@/filters/global-exception.filter';
 import { LoggerMiddleware } from '@/middleware/logger.middleware';
+import { MetricsInterceptor } from '@/interceptors/metrics.interceptor';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { LoggerMiddleware } from '@/middleware/logger.middleware';
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: MetricsInterceptor },
     { provide: APP_FILTER, useClass: GlobalExceptionFilter },
   ],
 })
