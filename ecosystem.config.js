@@ -10,6 +10,11 @@ module.exports = {
         NODE_ENV: 'development',
         env_file: '.env.development.local',
       },
+      env_development_container: {
+        NODE_ENV: 'development',
+        IS_CONTAINER: true,
+        env_file: '.env.development.container',
+      },
       env_production: {
         NODE_ENV: 'production',
         env_file: '.env',
