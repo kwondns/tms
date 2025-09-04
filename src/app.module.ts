@@ -28,7 +28,12 @@ import { LoggerMiddleware } from '@/middleware/logger.middleware';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.aws', process.env.NODE_ENV === 'production' ? '.env' : `.env.${process.env.NODE_ENV}.local`],
+      envFilePath: [
+        '.env.aws',
+        process.env.NODE_ENV === 'production'
+          ? '.env'
+          : `.env.${process.env.NODE_ENV}${process.env.IS_CONTAINER ? '.container' : '.local'}`,
+      ],
       load: [AppConfig],
     }),
     WinstonModule.forRoot(winstonConfig),
