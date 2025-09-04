@@ -14,27 +14,30 @@ export class MetricsInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
     const method = req.method as string;
-    const route = req.route?.path ?? req.url;
     const start = Date.now();
+    const route = req.route?.path ?? req.path ?? req.url ?? 'unknown';
+
+    if (route === '/metrics') {
+      return next.handle();
+    }
 
     // 요청 카운트 증가
     this.httpRequestsTotal.inc({ method, route });
 
     return next.handle().pipe(
-      // 수정된 tap 사용법
       tap({
         next: () => {
           const duration = (Date.now() - start) / 1000;
           const status = context.switchToHttp().getResponse().statusCode;
 
-          this.httpResponseStatus.inc({ status: status.toString() });
+          this.httpResponseStatus.inc({ method, status: status.toString() });
           this.httpRequestDurationSeconds.observe({ method, route, status: status.toString() }, duration);
         },
         error: (err) => {
           const duration = (Date.now() - start) / 1000;
           const status = err.status ?? 500;
 
-          this.httpResponseStatus.inc({ status: status.toString() });
+          this.httpResponseStatus.inc({ method, status: status.toString() });
           this.httpRequestDurationSeconds.observe({ method, route, status: status.toString() }, duration);
         },
       }),
