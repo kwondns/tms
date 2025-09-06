@@ -1,0 +1,27 @@
+networks:
+  monitor:
+    external: true
+
+services:
+  tms:
+    container_name: TMS-APP
+    build:
+      context: .
+      dockerfile: Dockerfile-Server
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/tms:latest
+    environment:
+      NODE_ENV: production
+    ports:
+      - "5440:5440"
+    networks:
+      - monitor
+    mem_limit: 300m  # 300MB 메모리 제한
+    mem_reservation: 250m
+    cpus: 0.5
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5440/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+

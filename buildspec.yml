@@ -1,24 +1,23 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 20
+  pre_build:
     commands:
-      - echo "의존성 설치 시작"
-      - yarn install --frozen-lockfile
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
   build:
     commands:
-      - echo "NestJS 빌드 시작"
-      - yarn build
-  post_build:
-    commands:
-      - echo "빌드 완료"
+      - echo "Building monitoring stack images..."
+
+      - docker-compose -f docker-compose-app.yml build
+      - docker push $TMS_REPO_URI:latest
+
+      - mkdir -p deployment
+      - cp docker-compose-app.yml deployment/
+      - cp -r scripts deployment/ || mkdir deployment/scripts
+
 artifacts:
   files:
-    - dist/**/*
-    - package.json
-    - yarn.lock
     - appspec.yml
-    - scripts/**/*
-    - ecosystem.config.js
+    - deployment/**/*
+  name: app-deployment
