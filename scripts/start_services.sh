@@ -1,18 +1,19 @@
 #!/bin/bash
-
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
+
+cd /opt/app
 
 echo -e "${YELLOW}🚀 서비스 배포 중...${NC}"
 
 # 이전 컨테이너 정리
 echo "이전 컨테이너 정리 중..."
-docker-compose down --remove-orphans 2>/dev/null || true
+docker-compose -f docker-compose-app.yml down --remove-orphans 2>/dev/null || true
 
 # 서비스 시작
 echo "서비스 시작 중..."
-docker-compose up -d
+docker-compose -f docker-compose-app.yml up -d
 
 # 컨테이너 시작 대기
 echo "컨테이너 초기화 대기 중..."
