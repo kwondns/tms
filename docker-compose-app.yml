@@ -1,6 +1,7 @@
 networks:
   monitor:
     external: true
+    name: monitor
 
 services:
   tms:
