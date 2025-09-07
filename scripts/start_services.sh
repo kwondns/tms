@@ -13,6 +13,8 @@ docker-compose -f docker-compose-app.yml down --remove-orphans 2>/dev/null || tr
 
 # 서비스 시작
 echo "서비스 시작 중..."
+export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+export AWS_REGION=ap-northeast-2
 docker-compose -f docker-compose-app.yml up -d
 
 # 컨테이너 시작 대기

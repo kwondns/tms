@@ -1,11 +1,7 @@
 #!/bin/sh
 set -e
 
-# 1. 마이그레이션 적용
-yarn run mi:prod:g || true
-yarn run mi:prod:r || true
-
-# 2. 서버 시작
+# 1. 환경 변수 생성
 echo "[DEBUG] .env 생성 시작" >&2
 SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query SecretString --output text)
 {
@@ -39,6 +35,10 @@ SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id tms-secret --query
   echo "LOKI_PORT=$(echo $SECRET_JSON | jq -r .loki_port)"
 } > .env
 echo "[DEBUG] .env 생성 완료" >&2
+
+# 2. 마이그레이션 적용
+yarn run mi:prod:g || true
+yarn run mi:prod:r || true
 
 
 exec pm2-runtime start ecosystem.config.js --env production
