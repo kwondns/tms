@@ -12,6 +12,7 @@ services:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/tms:latest
     environment:
       NODE_ENV: production
+      PORT: 5440
     ports:
       - "5440:5440"
     networks:
