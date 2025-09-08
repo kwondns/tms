@@ -22,7 +22,7 @@ export class MetricsInterceptor implements NestInterceptor {
     }
 
     // 요청 카운트 증가
-    this.httpRequestsTotal.inc({ method, route });
+    this.httpRequestsTotal.inc({ method, route, service: route.split('/')[1] });
 
     return next.handle().pipe(
       tap({
@@ -30,15 +30,21 @@ export class MetricsInterceptor implements NestInterceptor {
           const duration = (Date.now() - start) / 1000;
           const status = context.switchToHttp().getResponse().statusCode;
 
-          this.httpResponseStatus.inc({ method, status: status.toString() });
-          this.httpRequestDurationSeconds.observe({ method, route, status: status.toString() }, duration);
+          this.httpResponseStatus.inc({ method, status: status.toString(), service: route.split('/')[1] });
+          this.httpRequestDurationSeconds.observe(
+            { method, route, service: route.split('/')[1], status: status.toString() },
+            duration,
+          );
         },
         error: (err) => {
           const duration = (Date.now() - start) / 1000;
           const status = err.status ?? 500;
 
-          this.httpResponseStatus.inc({ method, status: status.toString() });
-          this.httpRequestDurationSeconds.observe({ method, route, status: status.toString() }, duration);
+          this.httpResponseStatus.inc({ method, status: status.toString(), service: route.split('/')[1] });
+          this.httpRequestDurationSeconds.observe(
+            { method, route, status: status.toString(), service: route.split('/')[1] },
+            duration,
+          );
         },
       }),
     );
